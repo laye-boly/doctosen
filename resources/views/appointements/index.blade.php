@@ -15,6 +15,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+      
 
         <link href="../../../css/bootstrap.min.css" rel="stylesheet">
 
@@ -121,6 +122,8 @@ https://templatemo.com/tm-566-medic-care
                                 <th scope="col">satus</th>
                                 <th scope="col">Détails</th>
                                 <th scope="col">télécharger</th>
+                             
+
                               </tr>
                             </thead>
                             <tbody>
@@ -139,8 +142,7 @@ https://templatemo.com/tm-566-medic-care
                                 <td>{{ $appointement->status }}</td>
                                 <td><a class="btn btn-info" href="/dashboard/user/appointement/show/{{$appointement->id}}">Voir les détails</a></td>
                                 <td><a class="btn btn-info" href="{{route('appointement.download', ["id" => $appointement->id])}}">Télécharger</a></td>
-
-
+                                
                               </tr>
                             @endforeach
 
@@ -153,6 +155,8 @@ https://templatemo.com/tm-566-medic-care
 
 
         </main>
+
+        
 
         <footer class="site-footer section-padding" id="contact">
             <div class="container">
@@ -215,6 +219,7 @@ https://templatemo.com/tm-566-medic-care
         <script src="../../../js/owl.carousel.min.js"></script>
         <script src="../../../js/scrollspy.min.js"></script>
         <script src="../../../js/custom.js"></script>
+        
 <!--
 
 TemplateMo 566 Medic Care

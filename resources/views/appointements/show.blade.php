@@ -16,15 +16,16 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
 
-        <link href="../../../css/bootstrap-icons.css" rel="stylesheet">
+        <link href="../../../../css/bootstrap-icons.css" rel="stylesheet">
 
         <link href="../../../../css/owl.carousel.min.css" rel="stylesheet">
 
-        <link href="../../../css/owl.theme.default.min.css" rel="stylesheet">
+        <link href="../../../../css/owl.theme.default.min.css" rel="stylesheet">
 
-        <link href="../../../css/templatemo-medic-care.css" rel="stylesheet">
+        <link href="../../../../css/templatemo-medic-care.css" rel="stylesheet">
+        <link href="../../../../webrtccss/webrtc.css" rel="stylesheet">
 <!--
 
 TemplateMo 566 Medic Care
@@ -111,10 +112,18 @@ https://templatemo.com/tm-566-medic-care
                 <div class="container">
 
                 <div class="row">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card">
 
                         <div class="card-body">
+                        <div hidden id="username">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</div>
                           <h5 class="card-title">Information sur le patient</h5>
+                          {{-- data-bs-target="#appelModal data-bs-toggle="modal" --}}
+                          <button type="button" class="btn btn-primary" 
+                          data-bs-target="#appelModal" data-bs-toggle="modal"
+                          id="target-username"
+                          data-target-username="{{$appointement->patient->first_name}} {{$appointement->patient->last_name}}">
+                            Rejoindre la salle de discussion
+                          </button>
                           <table class="table">
                             <tbody>
                                 <tr>
@@ -137,7 +146,7 @@ https://templatemo.com/tm-566-medic-care
                             <tbody>
                                 <tr>
                                     <td>Prénom et nom du médecin</td>
-                                    <td>{{$appointement->doctor->first_name}} {{$appointement->doctor->last_name}}</td>
+                                    <td id="username">{{$appointement->doctor->first_name}} {{$appointement->doctor->last_name}}</td>
                                   </tr>
                                   <tr>
                                     <td>Téléphone</td>
@@ -195,6 +204,68 @@ https://templatemo.com/tm-566-medic-care
 
         </main>
 
+        {{-- modal start --}}
+
+        {{-- modal video call and chart start --}}
+
+        <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="appelModal" tabindex="-1" aria-labelledby="appelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="appelModalLabel">Appel en cours</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+              <div class="col-md-10" style="position: relative; left: 0; top: 0;">
+              <div id="video-call-div">
+               
+                  <video id="received_video" autoplay></video>
+                  <video id="local_video"   autoplay muted></video>
+                  <div class="call-action-div">
+                    <button id="hangup-button" onclick="hangUpCall();" 
+                        role="button" disabled class="action-call"
+                        >
+                    Hang Up
+                    </button>
+                  </div>
+  
+              </div>
+            </div>
+              
+     
+                  <div class="col-md-2">
+                        <h5>Participants</h5>
+                        <ul class="userlistbox"></ul>
+                        Chat:<br/>
+                        <input id="text" type="text" name="text"  placeholder="Say something meaningful..."  onkeyup="handleKey(event)">
+                        <input type="button" id="send" name="send" value="Send" onclick="handleSendButton()">
+
+                        
+                          <h5>Discussion</h5>
+                        <div class="chatbox"></div>
+                  </div>
+                  
+    
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fin Appel</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        {{-- modal video call and chart end --}}
+        {{-- modal end --}}
+
         <footer class="site-footer section-padding" id="contact">
             <div class="container">
                 <div class="row">
@@ -251,11 +322,17 @@ https://templatemo.com/tm-566-medic-care
         </footer>
 
         <!-- JAVASCRIPT FILES -->
-        <script src="../../../js/jquery.min.js"></script>
-        <script src="../../../js/bootstrap.bundle.min.js"></script>
-        <script src="../../../js/owl.carousel.min.js"></script>
-        <script src="../../../js/scrollspy.min.js"></script>
-        <script src="../../../js/custom.js"></script>
+        <script src="../../../../js/jquery.min.js"></script>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script src="../../../../js/owl.carousel.min.js"></script>
+        <script src="../../../../js/scrollspy.min.js"></script>
+        <script src="../../../../js/custom.js"></script>
+    
+        <script src="../../../../webrtcjs/adapter.js"></script>
+        <script src="../../../../webrtcjs/chatclient.js"></script>
+
+        <script src="../../../../webrtcjs/connect-to-server.js"></script>
+
 <!--
 
 TemplateMo 566 Medic Care

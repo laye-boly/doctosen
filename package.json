@@ -9,6 +9,10 @@
         "prod": "npm run production",
         "production": "mix --production"
     },
+    "dependencies": {
+        "webrtc-adapter": "^1.4.0",
+        "websocket": "^1.0.34"
+    },
     "devDependencies": {
         "@tailwindcss/forms": "^0.3.1",
         "@tailwindcss/typography": "^0.4.0",
