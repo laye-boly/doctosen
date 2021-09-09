@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDoctorIdPatientIdToAppointements extends Migration
+class AddPatientIdToAppointements extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddDoctorIdPatientIdToAppointements extends Migration
     public function up()
     {
         Schema::table('appointements', function (Blueprint $table) {
-            $table->integer("doctor_id")->nullable();
+           
             $table->integer("patient_id")->nullable();
         });
     }

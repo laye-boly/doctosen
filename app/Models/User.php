@@ -110,6 +110,31 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Appointement::class, "patient_id");
     }
 
+      
+    /**
+     * Get the medicaldocuments for the doctor user
+     * Le médecin peut accéder à un ou plsusieurs dossier medical
+     * On défint ici une relation many-to-many car un document médical peut être partagé par plusieurs
+     * médecins
+     * la relation inverse many-to-many est défini dans le modèle MedicalDocument.php 
+     */
+    public function doctorMedicalsDocuments()
+    {
+        return $this->belongsToMany(MedicalDocument::class, "medical_doctor", "doctor_id", "medical_id");
+    }
+
+    /**
+     * Get the medicaldocuments for the patient user.
+     * On définit une realation many-to-one entre un patient et un document médical
+     * Un document médical ne peut appartenir qu'a un seulpatient aors qu'un patient peut avoir plusieur
+     * document médical qui constitueront son dossier médical
+     * la relation inverse est défint dans MedicalDocument.php
+     */
+    public function patientMedicalDocument()
+    {
+        return $this->hasMany(MedicalDocument::class, "patient_id");
+    }
+
      // end - relationships defintion
 
 }

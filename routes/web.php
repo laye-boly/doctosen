@@ -7,6 +7,7 @@ use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\DiplomaController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointementController;
+use App\Http\Controllers\MedicalDocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,4 +72,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/user/appointement/delete', [AppointementController::class, "delete"])->name("appointement.delete");
     Route::get('/dashboard/user/appointement/show/{id}', [AppointementController::class, "show"])->name("appointement.show");
     Route::get('/dashboard/user/appointement/download/{id}', [AppointementController::class, "download"])->name("appointement.download");
+
+
+    Route::get('/dashboard/user/medical/document', [MedicalDocumentController::class, "index"])->name("medical.index");
+    Route::get('/dashboard/user/medical/document/create', [MedicalDocumentController::class, "create"])->name("medical.create");
+    Route::post('/dashboard/user/medical/document/store', [MedicalDocumentController::class, "store"])->name("medical.store");
+    Route::get('/dashboard/user/medical/document/edit/{id}', [MedicalDocumentController::class, "edit"])->name("medical.edit");
+    Route::post('/dashboard/user/medical/document/update/{id}', [MedicalDocumentController::class, "update"])->name("medical.update");
+    Route::get('/dashboard/user/medical/document/show/{id}', [MedicalDocumentController::class, "show"])->name("medical.show");
+    Route::get('/dashboard/user/medical/document/download/{id}', [MedicalDocumentController::class, "download"])->name("medical.download");
 });
