@@ -23,11 +23,11 @@ class AppointementController extends Controller
     public function index(Request $request){
         $appointement = null;
         if(Auth::user()->type == "doctor"){
-            $appointements = Appointement::where("doctor_id", Auth::user()->id)->get();
+            $appointements = Appointement::where("doctor_id", Auth::user()->id)->orderBy('id', 'DESC')->get();
         }else{
-            $appointements = Appointement::where("patient_id", Auth::user()->id)->get();
+            $appointements = Appointement::where("patient_id", Auth::user()->id)->orderBy('id', 'DESC')->get();
         }
-
+        
 
         return view("appointements.index")->with("appointements", $appointements);
     }
@@ -37,9 +37,11 @@ class AppointementController extends Controller
         // Pour les besoins des champs cachés dans le formulaire qui sera crée
         $schedule = $request->input("schedule");
         $doctor = $request->input("doctor");
+        $errorTime = $request->input("errorTime");
 
+        // dd($errorTime);
         // On défint les erreur relatis au choix de l'heure à "no"
-        $errorTime = "no";
+        // $errorTime = "no";
         return view("appointements.create")->with(["schedule" => $schedule, "doctor" => $doctor, "errorTime" => $errorTime]);
     }
 
@@ -94,7 +96,8 @@ class AppointementController extends Controller
 
         }else{
                 $errorTime = "Veuillez choisir une heure comprise entre $starTime et $endTime";
-            return view("appointements.create")->with(["schedule" => $schedule->id, "doctor" => $doctor->id, "errorTime" => $errorTime]);
+            // return view("appointements.create")->with(["schedule" => $schedule->id, "doctor" => $doctor->id, "errorTime" => $errorTime]);
+            return redirect()->route('appointement.create', ["schedule" => $schedule->id, "doctor" => $doctor->id, "errorTime" => $errorTime]);
         }
 
 

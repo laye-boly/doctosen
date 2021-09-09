@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Medic Care Bootstrap 5 CSS Template</title>
+        <title>Doctosen - @yield("title")</title>
 
         <!-- CSS FILES -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,7 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+       
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
         <link href="css/bootstrap-icons.css" rel="stylesheet">
@@ -25,6 +26,8 @@
         <link href="css/owl.theme.default.min.css" rel="stylesheet">
 
         <link href="css/templatemo-medic-care.css" rel="stylesheet">
+
+    
 <!--
 
 TemplateMo 566 Medic Care
@@ -38,74 +41,9 @@ https://templatemo.com/tm-566-medic-care
 
         <main>
 
-            <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
-                <div class="container">
-                    <a class="navbar-brand mx-auto d-lg-none" href="index.html">
-                        Medic Care
-                        <strong class="d-block">Health Specialist</strong>
-                    </a>
-
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#hero">Home</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#about">About</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#timeline">Timeline</a>
-                            </li>
-
-                            <a class="navbar-brand d-none d-lg-block" href="index.html">
-                                Medic Care
-                                <strong class="d-block">Health Specialist</strong>
-                            </a>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#reviews">Testimonials</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#booking">Booking</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#contact">Contact</a>
-                            </li>
-
-                            @if (Route::has('login'))
-
-                                @auth
-                                    <li class="nav-item">
-                                        <a href="{{ url('/dashboard') }}" class="nav-link">Dashboard</a>
-                                    </li>
-                            @else
-                                <li class="nav-item">
-
-                                    <a href="{{ route('login') }}" class="nav-link">Log in</a>
-                                </li>
-                                @if (Route::has('register'))
-                                    <li class="nav-item">
-
-                                        <a href="{{ route('register') }}" class="nav-link">Register</a>
-                                    </li>
-                                @endif
-                                @endauth
-
-                             @endif
-
-                        </ul>
-                    </div>
-
-                </div>
-            </nav>
+            @include("menu")
+            
+         
 
             <section class="hero" id="hero">
                 <div class="container">
@@ -115,15 +53,15 @@ https://templatemo.com/tm-566-medic-care
                             <div id="myCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="images/slider/portrait-successful-mid-adult-doctor-with-crossed-arms.jpg" class="img-fluid" alt="">
+                                        <img src="images/slider/doctor1.jpg" class="img-fluid" alt="">
                                     </div>
 
                                     <div class="carousel-item">
-                                        <img src="images/slider/young-asian-female-dentist-white-coat-posing-clinic-equipment.jpg" class="img-fluid" alt="">
+                                        <img src="images/slider/doctor2.jpg" class="img-fluid" alt="">
                                     </div>
 
                                     <div class="carousel-item">
-                                        <img src="images/slider/doctor-s-hand-holding-stethoscope-closeup.jpg" class="img-fluid" alt="">
+                                        <img src="images/slider/doctor3.jpg" class="img-fluid" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -131,20 +69,20 @@ https://templatemo.com/tm-566-medic-care
                             <div class="heroText d-flex flex-column justify-content-center">
 
                                 <h1 class="mt-auto mb-2">
-                                    Better
+                                    Meilleure
                                     <div class="animated-info">
-                                        <span class="animated-item">health</span>
-                                        <span class="animated-item">days</span>
-                                        <span class="animated-item">lives</span>
+                                        <span class="animated-item">vie</span>
+                                        <span class="animated-item">jours</span>
+                                        <span class="animated-item">santé</span>
                                     </div>
                                 </h1>
 
-                                <p class="mb-4">Medic Care is a Bootstrap 5 Template provided by TemplateMo website. Credits go to FreePik and RawPixel for images used in this template.</p>
+                                <p class="mb-4"> sit amet, consectetur adipiscing elit. Duis aliquet lectus semper, mattis nulla sed, rutrum libero. Vivamus malesuada tempus nibh, eget faucibus ligula bibendum cumsan diam alique.</p>
 
                                 <div class="heroLinks d-flex flex-wrap align-items-center">
-                                    <a class="custom-link me-4" href="#about" data-hover="Learn More">Learn More</a>
+                                    <a class="custom-link me-4" href="#booking" data-hover="Learn More">Prendre un Rendez-vous !</a>
 
-                                    <p class="contact-phone mb-0"><i class="bi-phone"></i> 010-020-0340</p>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -152,28 +90,38 @@ https://templatemo.com/tm-566-medic-care
                     </div>
                 </div>
             </section>
+          
 
-            <section class="section-padding" id="about">
+        
+
+            <section class="about" id="about">
                 <div class="container">
                     <div class="row">
 
                         <div class="col-lg-6 col-md-6 col-12">
-                            <h2 class="mb-lg-3 mb-3">Meet Dr. Carson</h2>
+                            <h2 class="mb-lg-3 mb-3"> Notre équipe</h2>
 
-                            <p>Protect yourself and others by wearing masks and washing hands frequently. Outdoor is safer than indoor for gatherings or holding events. People who get sick with Coronavirus disease (COVID-19) will experience mild to moderate symptoms and recover without special treatments.</p>
-
-                            <p>You can feel free to use this CSS template for your medical profession or health care related websites. You can <a rel="nofollow" href="http://paypal.me/templatemo" target="_blank">support us a little</a> via PayPal if this template is good and useful for your work.</p>
+                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aliquet lectus semper, mattis 
+                            nulla sed, rutrum libero. Vivamus malesuada tempus nibh, eget faucibus ligula bibendum et. 
+                            Duis placerat sapien justo, in accumsan diam aliquet ac. Praesent vitae felis quis arcu semper 
+                            bibendum. Fusce venenatis eget nunc quis luctus. Curabitur vitae leo lorem. Proin eget facilisis 
+                            arcu, id ornare urna. Nam lobortis tellus ut neque pulvinar facilisis. Nunc fermentum tincidunt
+                             dapibus. Fusce rutrum lorem ut bibendum gravida.</p>
                         </div>
 
                         <div class="col-lg-4 col-md-5 col-12 mx-auto">
                             <div class="featured-circle bg-white shadow-lg d-flex justify-content-center align-items-center">
-                                <p class="featured-text"><span class="featured-number">12</span> Years<br> of Experiences</p>
+                                <p class="featured-text"><span class="featured-number">12</span> Ans<br> d'Expérience</p>
                             </div>
                         </div>
 
                     </div>
                 </div>
             </section>
+
+          
+
+           
 
             <section class="gallery">
                 <div class="container">
@@ -191,11 +139,15 @@ https://templatemo.com/tm-566-medic-care
                 </div>
             </section>
 
+     
+
+        
+
             <section class="section-padding pb-0" id="timeline">
                 <div class="container">
                     <div class="row">
 
-                        <h2 class="text-center mb-lg-5 mb-4">Our Timeline</h2>
+                        <h2 class="text-center mb-lg-5 mb-4">Nos services</h2>
 
                         <div class="timeline">
                             <div class="row g-0 justify-content-end justify-content-md-around align-items-start timeline-nodes">
@@ -285,12 +237,16 @@ https://templatemo.com/tm-566-medic-care
                 </div>
             </section>
 
+          
+
+          
+
             <section class="section-padding pb-0" id="reviews">
                 <div class="container">
                     <div class="row">
 
                         <div class="col-12">
-                            <h2 class="text-center mb-lg-5 mb-4">Our Patients</h2>
+                            <h2 class="text-center mb-lg-5 mb-4">Nos Patients</h2>
 
                             <div class="owl-carousel reviews-carousel">
 
@@ -389,6 +345,8 @@ https://templatemo.com/tm-566-medic-care
                 </div>
             </section>
 
+          
+
             <section class="section-padding" id="booking">
                 <div class="container">
                     <div class="row">
@@ -428,8 +386,12 @@ https://templatemo.com/tm-566-medic-care
                 </div>
             </section>
 
+        
+
         </main>
 
+
+    
         <footer class="site-footer section-padding" id="contact">
             <div class="container">
                 <div class="row">
@@ -485,12 +447,18 @@ https://templatemo.com/tm-566-medic-care
             </section>
         </footer>
 
+     
+
+  
+
         <!-- JAVASCRIPT FILES -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/scrollspy.min.js"></script>
         <script src="js/custom.js"></script>
+
+       
 <!--
 
 TemplateMo 566 Medic Care

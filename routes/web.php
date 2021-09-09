@@ -19,17 +19,17 @@ use App\Http\Controllers\AppointementController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 
 
 
-Route::get('/home', [HomeController::class, "index"]
+Route::get('/', [HomeController::class, "index"]
 );
 
 Route::get('/user/profile/complete', [CompleteProfileController::class, "create"]
@@ -56,12 +56,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/profile/complete/diploma', [DiplomaController::class, "store"]
     );
 
-    Route::get('/dashboard/doctor/schedule/create', [ScheduleController::class, "create"]);
-    Route::get('/dashboard/doctor/schedule', [ScheduleController::class, "index"]);
-    Route::post('/dashboard/doctor/schedule/store', [ScheduleController::class, "store"]);
-    Route::get('/dashboard/doctor/schedule/edit/{id}', [ScheduleController::class, "edit"]);
+    Route::get('/dashboard/doctor/schedule/create', [ScheduleController::class, "create"])->name("schedule.create");
+    Route::get('/dashboard/doctor/schedule', [ScheduleController::class, "index"])->name("schedule.index");
+    Route::post('/dashboard/doctor/schedule/store', [ScheduleController::class, "store"])->name("schedule.store");
+    Route::get('/dashboard/doctor/schedule/edit/{id}', [ScheduleController::class, "edit"])->name("schedule.edit");
     Route::post('/dashboard/doctor/schedule/update/{id}', [ScheduleController::class, "update"])->name("schedule.update");
-    Route::post('/dashboard/doctor/schedule/delete', [ScheduleController::class, "delete"]);
+    Route::post('/dashboard/doctor/schedule/delete', [ScheduleController::class, "delete"])->name("schedule.delete");
 
     Route::get('/dashboard/user/appointement', [AppointementController::class, "index"])->name("appointement.index");
     Route::get('/dashboard/user/appointement/create', [AppointementController::class, "create"])->name("appointement.create");

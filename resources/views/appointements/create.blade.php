@@ -117,14 +117,16 @@ https://templatemo.com/tm-566-medic-care
 
   </div>
   <div class="card-body">
-    @if ($errorTime != "no")
+    @if ($errorTime != null)
     <div class="alert alert-danger" role="alert">
         {{$errorTime}}
     </div>
     @endif
 
+    @if($errors)
     <div class="alert alert-danger">
         <ul>
+            
 
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -132,6 +134,8 @@ https://templatemo.com/tm-566-medic-care
 
         </ul>
     </div>
+
+    @endif
 
          {!! Form::open(['url' => '/dashboard/user/appointement/store']) !!}
 

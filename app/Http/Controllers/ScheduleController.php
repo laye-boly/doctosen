@@ -58,7 +58,8 @@ class ScheduleController extends Controller
         // On s'assure que le lheure de début de diponibilité est inférieure à celle de fin de disponibilité
         if($starTimeTotimestamp > $endTimeTotimestamp){
             $errorTime = "L'heure de début de disponiblité doit être inférieure à celle de fin de disponibilité";
-            return view("schedules.create")->with(["errorTime" => $errorTime, "errorDate" => "no"]);
+            // return view("schedules.create")->with(["errorTime" => $errorTime, "errorDate" => "no"]);
+            return redirect()->route('schedule.create', ["errorTime" => $errorTime, "errorDate" => "no"]);
         }
 
         $scheduleDate = $request->input('scheduleDate');
@@ -70,7 +71,9 @@ class ScheduleController extends Controller
         // On s'assure que le date de diponibilité est inférieure à celle d'aujourd'hui
         if($scheduleDateTotimestamp < $actualDateTotimestamp){
             $errorDate = "Vous ne pouvez pas être disponiblité à une date passée";
-            return view("schedule.create")->with(["errorDate" => $errorDate, "errorTime" => "no"]);
+            // return view("schedule.create")->with(["errorDate" => $errorDate, "errorTime" => "no"]);
+            return redirect()->route('schedule.create', ["errorTime" => "no", "errorDate" => $errorDate]);
+
         }
 
         $schedule = new Schedule;
@@ -116,7 +119,9 @@ class ScheduleController extends Controller
         if($starTimeTotimestamp > $endTimeTotimestamp){
             $errorTime = "L'heure de début de disponiblité doit être inférieure à celle de fin de disponibilité";
             $schedule = Schedule::findOrFail($id);
-            return view("schedules.edit")->with(["errorTime" => $errorTime, "errorDate" => "no", "schedule" => $schedule]);
+            // return view("schedules.edit")->with(["errorTime" => $errorTime, "errorDate" => "no", "schedule" => $schedule]);
+            return redirect()->route('schedule.edit', ["errorTime" => $errorTime, "errorDate" => "no", "schedule" => $schedule]);
+
         }
 
         $scheduleDate = $request->input('scheduleDate');
@@ -128,7 +133,9 @@ class ScheduleController extends Controller
         // On s'assure que le date de diponibilité est inférieure à celle d'aujourd'hui
         if($scheduleDateTotimestamp < $actualDateTotimestamp){
             $errorDate = "Vous ne pouvez pas être disponiblité à une date passée";
-            return view("schedules.edit")->with(["errorDate" => $errorDate, "errorTime" => "no", "schedule" => Schedule::findOrFail($id)]);
+            // return view("schedules.edit")->with(["errorDate" => $errorDate, "errorTime" => "no", "schedule" => Schedule::findOrFail($id)]);
+            return redirect()->route('schedule.edit', ["errorTime" => "no", "errorDate" => $errorDate, "schedule" => Schedule::findOrFail($id)]);
+
         }
 
         $schedule = Schedule::findOrFail($id);
