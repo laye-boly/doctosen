@@ -61,84 +61,17 @@ https://templatemo.com/tm-566-medic-care
             <section class="section-padding" id="booking">
                 <div class="container">
                     <div class="row">
-                        {{-- debut --}}
+                        
                         <div class="col-lg-8 col-12 mx-auto">
                             <div class="booking-form">
 
-                                <h2 class="text-center mb-lg-3 mb-2">Modifier le document médical</h2>
+                                <h5 class="text-center mb-lg-3 mb-2"> type du dossier médical : {{$document->type}}</h5>
 
-                               
-                                @if($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        
-                        
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                        
-                                    </ul>
+                                <div class="position-relative">
+                                    <div class="position-absolute top-0 start-50 translate-middle-x">
+                                        <p></p>
+                                    </div>
                                 </div>
-                        
-                                @endif
-
-                                {!! Form::open(['route' => ['medical.update', $medical->id ]])!!}
-
-            
-            <div class="form-group">
-                {{Form::label('body ', "Le corps du document")}}
-                {{Form::textarea ('body', $medical->body, ['class' => 'form-control'])}}
-            </div>
-            
-            
-            <br><br>
-            <div class="form-group">
-                {{Form::label('type', "Le type de document ")}}
-                
-
-                {{Form::select('type', ['certificat medical' => 'certificat médical', 'ordonnance' => 'ordonnance', 'recommandation' => 'recommandation'], $medical->type, ['placeholder' => $medical->type]) }}
-
-            </div>
-
-            <div class="form-group">
-                {{Form::label('doctors', "Donnez accès à d'autres médecins ")}}
-                {{Form::select('doctors[]', $doctors, null, array('multiple' => true, 'class' => 'form-select')) }}
-
-            </div>
-            <br>
-
-            {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
-            {!! Form::close() !!}
-                            </div>
-                        </div>
-                        {{-- fin --}}
-                        <div class="col-lg-8 col-12 mx-auto">
-                            <div class="booking-form">
-
-                                <h2 class="text-center mb-lg-3 mb-2">Médecins ayant accès au document </h2>
-
-                                <table class="table table-striped">
-                                    <thead>
-                                      <tr>
-                                        <th>prenom et nom du médecin</th>
-                                        <th>spécialite</th>
-                                        <th>téléphone</th>
-                                        {{-- <th>structure sanitaire</th> --}}
-                                        {{-- <th>adresse de la structure sanitaire</th> --}}
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($doctorMedicals as $doctorMedical)
-                                    <tr>
-                                        <td>{{$doctorMedical->first_name }} {{$doctorMedical->last_name}}</td>
-                                                <td>{{$doctorMedical->title}}</td>
-                                                <td>{{$doctorMedical->phone }}</td>
-                                                {{-- <td>{{$user->hospitals }}</td> --}}
-                                      </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
                             </div>
                         </div>
 

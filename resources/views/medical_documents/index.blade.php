@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Medic Care Bootstrap 5 CSS Template</title>
+        <title>Doctosen - @yield("title")</title>
 
         <!-- CSS FILES -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,17 +15,19 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-      
 
-        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+       
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
 
-        <link href="../../../../css/bootstrap-icons.css" rel="stylesheet">
+            <link href="../../../../../css/bootstrap-icons.css" rel="stylesheet">
 
-        <link href="../../../../../css/owl.carousel.min.css" rel="stylesheet">
+            <link href="../../../../../css/owl.carousel.min.css" rel="stylesheet">
 
-        <link href="../../../../css/owl.theme.default.min.css" rel="stylesheet">
+            <link href="../../../../../css/owl.theme.default.min.css" rel="stylesheet">
 
-        <link href="../../../../css/templatemo-medic-care.css" rel="stylesheet">
+            <link href="../../../../../css/templatemo-medic-care.css" rel="stylesheet">
+
+    
 <!--
 
 TemplateMo 566 Medic Care
@@ -39,126 +41,78 @@ https://templatemo.com/tm-566-medic-care
 
         <main>
 
-            <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
-                <div class="container">
-                    <a class="navbar-brand mx-auto d-lg-none" href="index.html">
-                        Medic Care
-                        <strong class="d-block">Health Specialist</strong>
-                    </a>
-
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#hero">Home</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#about">About</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#timeline">Timeline</a>
-                            </li>
-
-                            <a class="navbar-brand d-none d-lg-block" href="index.html">
-                                Medic Care
-                                <strong class="d-block">Health Specialist</strong>
-                            </a>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#reviews">Testimonials</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#booking">Booking</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#contact">Contact</a>
-                            </li>
-
-                            @if (Route::has('login'))
-
-                                @auth
-                                    <li class="nav-item">
-                                        <a href="{{ url('/dashboard') }}" class="nav-link">Dashboard</a>
-                                    </li>
-                            @else
-                                <li class="nav-item">
-
-                                    <a href="{{ route('login') }}" class="nav-link">Log in</a>
-                                </li>
-                                @if (Route::has('register'))
-                                    <li class="nav-item">
-
-                                        <a href="{{ route('register') }}" class="nav-link">Register</a>
-                                    </li>
-                                @endif
-                                @endauth
-
-                             @endif
-
-                        </ul>
-                    </div>
-
-                </div>
-            </nav>
-
-            <section class="hero" id="hero">
-                <div class="container">
-
-                <div class="row">
-                    <div class="card col-md-10">
-                        <table class="table table-striped">
-                            <thead>
-                              <tr>
-        
-                                <th scope="col">Nom et prenom du patient</th>
+            @include("menu")
             
-                                <th scope="col">Type</th>
-                                <th scope="col">date d'établissement ou de téléchargement</th>
-                                <th scope="col">Editer</th>
-                                <th scope="col">Détails</th>
-                                <th scope="col">télécharger</th>
-                             
+         
+          
 
-                              </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($documents as $document)
-                            <tr>
-                                <td>
-                                   
+          
 
-                                    {{ $document->patient->first_name }} {{ $document->patient->last_name }}
-                                    
-                            </td>
-                                
-                                <td>{{ $document->type }}</td>
-                                <td>{{ $document->document_medical_date }}</td>
-                                <td><a class="btn btn-info" href="/dashboard/user/medical/document/edit/{{$document->id}}">Editer</a></td>
-                                <td><a class="btn btn-info" href="/dashboard/user/medical/document/show/{{$document->id}}">Voir les détails</a></td>
-                                <td><a class="btn btn-info" href="{{route('medical.download', ["id" => $document->id])}}">Télécharger</a></td>
-                                
-                              </tr>
-                            @endforeach
+         
 
-                        </tbody>
-                    </table>
+     
+
+        
+
+         
+
+          
+
+            <section class="section-padding" id="booking">
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-lg-8 col-12 mx-auto">
+                            <div class="booking-form">
+
+                                <h2 class="text-center mb-lg-3 mb-2">Liste des documents médicaux </h2>
+
+                                <table class="table table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th>Nom et prenom du patient</th>
+            
+                                        <th>Type</th>
+                                        <th>date d'établissement ou de téléchargement</th>
+                                        <th>Editer</th>
+                                        <th>Détails</th>
+                                        <th>télécharger</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($documents as $document)
+                                        <tr>
+                                            <td>
+                                               
+            
+                                                {{ $document->patient->first_name }} {{ $document->patient->last_name }}
+                                                
+                                        </td>
+                                            
+                                            <td>{{ $document->type }}</td>
+                                            <td>{{ $document->document_medical_date }}</td>
+                                            <td><a class="btn btn-info" href="/dashboard/user/medical/document/edit/{{$document->id}}">Editer</a></td>
+                                            <td><a class="btn btn-info" href="/dashboard/user/medical/document/show/{{$document->id}}">Voir les détails</a></td>
+                                            <td><a class="btn btn-info" href="{{route('medical.download', ["id" => $document->id])}}">Télécharger</a></td>
+                                            
+                                          </tr>
+                                        @endforeach
+
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+            </section>
 
-
-
+        
 
         </main>
 
-        
 
+    
         <footer class="site-footer section-padding" id="contact">
             <div class="container">
                 <div class="row">
@@ -214,13 +168,18 @@ https://templatemo.com/tm-566-medic-care
             </section>
         </footer>
 
+     
+
+  
+
         <!-- JAVASCRIPT FILES -->
-        <script src="../../../../js/jquery.min.js"></script>
-        <script src="../../../../js/bootstrap.bundle.min.js"></script>
-        <script src="../../../../js/owl.carousel.min.js"></script>
-        <script src="../../../../js/scrollspy.min.js"></script>
-        <script src="../../../../js/custom.js"></script>
-        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/scrollspy.min.js"></script>
+        <script src="js/custom.js"></script>
+
+       
 <!--
 
 TemplateMo 566 Medic Care

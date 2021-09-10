@@ -15,7 +15,7 @@ class MedicalDocument extends Model
      */
     public function doctors()
     {
-        return $this->belongsToMany(User::class, "medical_doctor", "doctor_id", "medical_id");
+        return $this->belongsToMany(User::class, "medical_doctor", "medical_id", "doctor_id");
     }
 
     public function patient()

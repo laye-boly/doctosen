@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Faker\Provider\Medical;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
+use App\Models\MedicalDoctor;
 
 class MedicalDocumentController extends Controller
 
@@ -87,12 +89,27 @@ class MedicalDocumentController extends Controller
        
         $medical = MedicalDocument::findOrFail($id);
         
-        $doctorMedical = $this->findDoctorForDocument($medical);
-        $doctors = User::where("type", "doctor");
+        $doctorMedicals = $this->findDoctorForDocument($medical);
+
+        $doctorMedicalIds = [];
+
+        foreach($doctorMedicals as $doctor){
+            $doctorMedicalIds[] = $doctor->id;
+        }
+        // Seuls les medecins qui n'ont pas  accès au document médical seront sur le select multiple
+        $doctorsInital = User::where("type", "doctor")->get()->whereNotIn("id", $doctorMedicalIds)->all();
+        // dd($doctorsInital);
+
+        // On construit le tableau qui servira aux select multiple pour donner acces à un ou plusieurs médecins
+        // au document médical
+        $doctors = [];
+        foreach($doctorsInital as $doctor){
+            $doctors[$doctor->id] = $doctor->toString();
+        }
 
     return view("medical_documents.edit")->with([
         "medical" => $medical, 
-        "doctorMedical" => $doctorMedical,
+        "doctorMedicals" => $doctorMedicals,
         "doctors" => $doctors
     ]);
     
@@ -108,6 +125,7 @@ class MedicalDocumentController extends Controller
             'body' => array(
                 "required"
             )
+           
             // "type" => "regex:#^certificat médical|ordonnance|recommandation|autre$#",
           
         ]);
@@ -116,6 +134,35 @@ class MedicalDocumentController extends Controller
         $medical->body = $request->input("body");
         $medical->type = $request->input("type");
 
+        // On récupère les id des médecins auquels on a donné accés au document médical du patient
+        // et on verifi que ce n'est vide
+        $newIdDoctors = $request->input("doctors");
+        
+        // On récupére les médecins qui avaient déja accés au documents
+
+        $alreadyDoctorsAcces = $this->findDoctorForDocument($medical);
+        // On récupère les id des médecins qui avaient déja accés au documents
+        $alreadyDoctorsAccesIds = [];
+
+        foreach($alreadyDoctorsAcces as $doctor){
+            $alreadyDoctorsAccesIds[] = $doctor->id;
+        }
+
+        // si $newIdDoctors n'est pas vide on le fusionne avec les id des medcin qui ont déja acces au 
+        //  document médical
+        $ids = $alreadyDoctorsAccesIds;
+        if(count($newIdDoctors) != 0){
+            $ids = array_merge($alreadyDoctorsAccesIds, $newIdDoctors);
+        }
+
+        // On lie le document au medecins
+        // dd($ids);
+        
+        foreach($ids as $id){
+            $medical->doctors()->attach($id);
+        }
+ 
+
         $medical->save();
 
         $documents = $this->getUserDocuments();
@@ -123,6 +170,14 @@ class MedicalDocumentController extends Controller
 
         return redirect()->route('medical.index')->with(['documents', $documents]);
     }
+
+
+    public function show(MedicalDocument $document){
+
+        
+        return view("medical_documents.show")->with("document", $document);
+    }
+
 
     private function getDoctorPatientId(){
 
@@ -156,6 +211,8 @@ class MedicalDocumentController extends Controller
                 
                 $medicalIdsRelatedToDoctor[] =  $doctorMedicalsDocument->pivot->medical_id;
             }
+
+            // dd($medicalIdsRelatedToDoctor);
             $medicalIdsRelatedToDoctor = collect($medicalIdsRelatedToDoctor)->unique()->toArray();
 
             $documents = MedicalDocument::all()->whereIn("id", $medicalIdsRelatedToDoctor)->all();
@@ -170,24 +227,24 @@ class MedicalDocumentController extends Controller
     }
 
 
-    private function findDoctorForDocument(MedicalDocument $document){
-
-       
+    private function findDoctorForDocument($document){
 
 
-            $doctorIdsRelatedToMedical = [];
-            foreach ($document->doctors as $doctor) {
+        $doctorIds = [];
+       $medicalDoctors =  MedicalDoctor::where("medical_id", $document->id)->get();
+      
+            foreach ($medicalDoctors as $doctor) {
                 
-                $doctorIdsRelatedToMedical[] =  $doctor->pivot->doctor_id;
+                $doctorIds[] =  $doctor->doctor_id;
             }
-            $doctorIdsRelatedToMedical = collect($doctorIdsRelatedToMedical)->unique()->toArray();
+            $doctorIds = collect($doctorIds)->unique()->toArray();
 
-            $doctors = MedicalDocument::all()->whereIn("id", $doctorIdsRelatedToMedical)->all();
-            
-
-       
-        return $doctors;
+            $doctors = User::all()->whereIn("id", $doctorIds)->all();
+// dd($doctors);
+            return $doctors;
     }
+
+   
 
     
 

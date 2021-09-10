@@ -354,16 +354,16 @@ https://templatemo.com/tm-566-medic-care
                         <div class="col-lg-8 col-12 mx-auto">
                             <div class="booking-form">
 
-                                <h2 class="text-center mb-lg-3 mb-2">Prendre un rendez-vous !</h2>
+                                <h5 class="text-center mb-lg-3 mb-2">Prendre un rendez-vous !</h5>
 
-                                <table class="table table-success table-striped">
+                                <table class="table table-striped">
                                     <thead>
                                       <tr>
-                                        <th scope="col">Prénom et nom</th>
-                                        <th scope="col">Titre / Spécialité</th>
-                                        <th scope="col">date de disponibilité</th>
-                                        <th scope="col">Intervalle de disponibilté</th>
-                                        <th scope="col">Prendre un Rv</th>
+                                        <th>Prénom et nom</th>
+                                        <th>Titre / Spécialité</th>
+                                        <th>date de disponibilité</th>
+                                        <th>Intervalle de disponibilté</th>
+                                        <th>Prendre un Rv</th>
                                       </tr>
                                     </thead>
                                     <tbody>

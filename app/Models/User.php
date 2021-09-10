@@ -137,4 +137,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
      // end - relationships defintion
 
+    public function toString(){
+        return $this->first_name. " ".$this->last_name." tel :".$this->phone;
+    }
+
 }
