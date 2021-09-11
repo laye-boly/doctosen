@@ -79,6 +79,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/user/medical/document/store', [MedicalDocumentController::class, "store"])->name("medical.store");
     Route::get('/dashboard/user/medical/document/edit/{id}', [MedicalDocumentController::class, "edit"])->name("medical.edit");
     Route::post('/dashboard/user/medical/document/update/{id}', [MedicalDocumentController::class, "update"])->name("medical.update");
-    Route::get('/dashboard/user/medical/document/show/{id}', [MedicalDocumentController::class, "show"])->name("medical.show");
-    Route::get('/dashboard/user/medical/document/download/{id}', [MedicalDocumentController::class, "download"])->name("medical.download");
+    Route::get('/dashboard/user/medical/document/show/{document}', [MedicalDocumentController::class, "show"])->name("medical.show");
+    Route::get('/dashboard/user/medical/document/download/{document}', [MedicalDocumentController::class, "download"])->name("medical.download");
+    Route::match(['get', 'post'], '/dashboard/user/medical/document/upload', [MedicalDocumentController::class, "upload"])->name("medical.upload");
+    Route::get('/dashboard/user/medical/document/upload/{filename}', [MedicalDocumentController::class, "downloadMedicalDocument"])->name("medical.downloadMedicalDocument");
 });

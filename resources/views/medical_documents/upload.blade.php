@@ -44,65 +44,69 @@ https://templatemo.com/tm-566-medic-care
             @include("menu")
             
          
-          
-
-          
-
-         
-
-     
-
-        
-
-         
-
-          
 
             <section class="section-padding" id="booking">
                 <div class="container">
-                    <div class="row">
-                        
-                        <div class="col-lg-8 col-12 mx-auto">
-                            <div class="booking-form">
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <div class="booking-form">
 
-                                <h2 class="text-center mb-lg-3 mb-2">Liste des documents médicaux </h2>
-
-                                <table class="table table-striped">
-                                    <thead>
-                                      <tr>
-                                        <th>Nom et prenom du patient</th>
-            
-                                        <th>Type</th>
-                                        <th>date d'établissement ou de téléchargement</th>
-                                        <th>Editer</th>
-                                        <th>Détails</th>
-                                        <th>télécharger</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($documents as $document)
-                                        <tr>
-                                            <td>
-                                               
-            
-                                                {{ $document->patient->first_name }} {{ $document->patient->last_name }}
-                                                
-                                        </td>
-                                            
-                                            <td>{{ $document->type }}</td>
-                                            <td>{{ $document->document_medical_date }}</td>
-                                            <td><a class="btn btn-info" href="/dashboard/user/medical/document/edit/{{$document->id}}">Editer</a></td>
-                                            <td><a class="btn btn-info" href="/dashboard/user/medical/document/show/{{$document->id}}">Voir les détails</a></td>
-                                            <td><a class="btn btn-info" href="{{route('medical.download', ["document" => $document->id])}}">Télécharger</a></td>
-                                            
-                                          </tr>
-                                        @endforeach
-
-                                </tbody>
-                            </table>
+                            @if($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                @foreach ($errors->all() as $error)
+                                   <li>{{$error}}</li> 
+                                @endforeach
+                                </ul>
                             </div>
-                        </div>
+                            @endif
 
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                   <p>{{ session('success') }}</p> 
+                                    <p class="text-end"><a href="{{route('medical.show', ['document' => session('id')])}}">voir le document</a></p>
+                                </div>
+                            @endif
+                            
+                            {!! Form::open(['url' => '/dashboard/user/medical/document/upload', 'files' => true]) !!}
+
+                                <div class="form-group">
+                                    {{Form::label('type', "Le type de document ")}}
+                                    
+                    
+                                    {{Form::select('type', ['certificat medical' => 'certificat médical', 'ordonnance' => 'ordonnance', 'recommandation' => 'recommandation'], null, ['placeholder' => 'choisir le type']) }}
+                    
+                                </div>
+
+                                @if ($authorType == "doctor")
+
+                                <div class="form-group">
+                                    {{Form::label('destinataire', "A quel patient ce document est destiné ")}}
+                                    {{Form::select('destinataire', $destinataires, null, array('class' => 'form-select')) }}
+                    
+                                </div>
+                                {{-- Nous permettra d'appliquer correctement les reglement de validations --}}
+                                <input type="hidden" value="patient" name="hidden_input">
+                                @else
+                                <div class="form-group">
+                                    {{Form::label('destinataire', "Donnez accès à d'autres médecins ")}}
+                                    {{Form::select('destinataire[]', $destinataires, null, array('multiple' => true, 'class' => 'form-select')) }}
+                    
+                                </div> 
+
+                                {{-- Nous permettra d'appliquer correctement les reglement de validations --}}
+                                <input type="hidden" value="doctor" name="hidden_input">
+                                @endif
+
+           
+            <div class="form-group">
+                {{Form::label('file', "télécharger le document médical ")}}
+                {{Form::file('file')}}
+            </div>
+
+            {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+        {!! Form::close() !!}
+                    
+                        </div>
                     </div>
                 </div>
             </section>
