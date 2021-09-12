@@ -339,6 +339,7 @@
 
                 $patient->patientMedicalDocument()->save($document);
 
+                // Redirection avec des mesages flashbag dans la sessions
                 return redirect('/dashboard/user/medical/document/upload')->with([
                     'success' => 'Votre document a été bien uplodé',
                     'id'      => $document->id

@@ -9,6 +9,11 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointementController;
 use App\Http\Controllers\MedicalDocumentController;
 
+
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,38 +29,54 @@ use App\Http\Controllers\MedicalDocumentController;
 //     return view('welcome');
 // });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
 
 
 
 Route::get('/', [HomeController::class, "index"]
 );
 
-Route::get('/user/profile/complete', [CompleteProfileController::class, "create"]
-);
-
-Route::post('/user/profile/complete/hospital', [HospitalController::class, "store"]
-);
-
-Route::post('/user/profile/complete/diploma', [DiplomaController::class, "store"]
-);
 
 
+Route::middleware(['auth','complete.registration'])->group(function () {
 
+    Route::get('/user/profile/complete', [CompleteProfileController::class, "create"])
+        ->name("complete.create")
+        ->withoutMiddleware(['complete.registration']);
 
+    Route::post('/user/profile/complete/hospital/store', [HospitalController::class, "store"])
+        ->name("hospital.store")
+        ->withoutMiddleware(['complete.registration']);
 
-Route::middleware(['auth'])->group(function () {
+    Route::post('/user/profile/complete/hospital/show', [HospitalController::class, "show"])
+        ->name("hospital.show")
+        ->withoutMiddleware(['complete.registration']);
 
-    Route::get('/user/profile/complete', [CompleteProfileController::class, "create"]
-    );
+    Route::post('/user/profile/complete/hospital/edit', [HospitalController::class, "edit"])
+        ->name("hospital.edit")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::post('/user/profile/complete/hospital/update', [HospitalController::class, "update"])
+        ->name("hospital.update")
+        ->withoutMiddleware(['complete.registration']);
 
-    Route::post('/user/profile/complete/hospital', [HospitalController::class, "store"]
-    );
+    Route::post('/user/profile/complete/diploma/store', [DiplomaController::class, "store"])
+        ->name("diploma.store")
+        ->withoutMiddleware(['complete.registration']);
 
-    Route::post('/user/profile/complete/diploma', [DiplomaController::class, "store"]
-    );
+     Route::post('/user/profile/complete/diploma/show', [DiplomaController::class, "show"])
+        ->name("diploma.show")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/profile/complete/diploma/edit', [DiplomaController::class, "edit"])
+        ->name("diploma.edit")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/profile/complete/diploma/update', [DiplomaController::class, "update"])
+        ->name("diploma.update")
+        ->withoutMiddleware(['complete.registration']);
 
     Route::get('/dashboard/doctor/schedule/create', [ScheduleController::class, "create"])->name("schedule.create");
     Route::get('/dashboard/doctor/schedule', [ScheduleController::class, "index"])->name("schedule.index");
@@ -83,4 +104,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/user/medical/document/download/{document}', [MedicalDocumentController::class, "download"])->name("medical.download");
     Route::match(['get', 'post'], '/dashboard/user/medical/document/upload', [MedicalDocumentController::class, "upload"])->name("medical.upload");
     Route::get('/dashboard/user/medical/document/upload/{filename}', [MedicalDocumentController::class, "downloadMedicalDocument"])->name("medical.downloadMedicalDocument");
+
+
+  
 });
+
+
+

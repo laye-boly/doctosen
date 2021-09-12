@@ -118,18 +118,22 @@ https://templatemo.com/tm-566-medic-care
     Renseignement sur votre structure sanitaire
   </div>
   <div class="card-body">
-  @if ($errors->has('name') || $errors->has('adress') || $errors->has('phone'))
-    <div class="alert alert-danger">
-        <ul>
+    @if ($errors->has("name") || $errors->has("phone") || $errors->has("adress "))
+        <div class="alert alert-danger">
+            <ul>
 
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
 
-        </ul>
-    </div>
-@endif
-         {!! Form::open(['url' => '/user/profile/complete/hospital']) !!}
+            </ul>
+        </div>
+    @endif
+
+    @if (count($hospitals) == 0 )
+        
+   
+         {!! Form::open(['url' => '/user/profile/complete/hospital/store']) !!}
         <div class="form-group">
             {{Form::label('nom ', 'nom')}}
             {{Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'nom du lieu de travail'])}}
@@ -144,7 +148,22 @@ https://templatemo.com/tm-566-medic-care
         </div>
 
         {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
-    {!! Form::close() !!}
+        {!! Form::close() !!}
+
+    @else
+
+        @if (session('success-hospital'))
+        <div class="alert alert-success">
+            <p>{{ session('success-hospital') }}</p> 
+            
+        </div>
+        @else
+        <p class="text-start">Vous avez déja renseigné cette partie</p>
+        @endif
+        <div class="text-end"><a href="{{route('hospital.show', ['hospital' => $hospitals[0]->id])}}">Voir les détails</a></div>
+        <p class="text-end"><a href="{{route('hospital.edit', ['hospital' => $hospitals[0]->id])}}">Modifier</a></p>
+
+    @endif
   </div>
 </div>
 
@@ -153,7 +172,7 @@ https://templatemo.com/tm-566-medic-care
     Télécharger votre diplôme principal
   </div>
   <div class="card-body">
-   @if ($errors->has('title') || $errors->has('year') || $errors->has('image'))
+   @if ($errors->has("title") || $errors->has("year") || $errors->has("image "))
     <div class="alert alert-danger">
         <ul>
 
@@ -163,8 +182,13 @@ https://templatemo.com/tm-566-medic-care
 
         </ul>
     </div>
-@endif
-         {!! Form::open(['url' => '/user/profile/complete/diploma', 'files' => true]) !!}
+    @endif
+
+   
+
+    @if (count($diplomas) == 0)
+
+         {!! Form::open(['url' => '/user/profile/complete/diploma/store', 'files' => true]) !!}
 
         <div class="form-group">
             {{Form::label('title ', 'titre du diplome')}}
@@ -181,6 +205,21 @@ https://templatemo.com/tm-566-medic-care
 
         {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
     {!! Form::close() !!}
+
+    @else
+        @if (session('success-diploma'))
+            <div class="alert alert-success">
+            <p>{{ session('success-diploma') }}</p> 
+            
+        </div>
+        @else
+        <p class="text-start">Vous avez déja uploadé votre diplôme</p>
+        @endif
+        <p class="text-end"><a href="{{route('diploma.show', ['diploma' => $diplomas[0]->id])}}">Voir les détails</a></p>
+        <p class="text-end"><a href="{{route('diploma.edit', ['diploma' => $diplomas[0]->id])}}">Modifier</a></p>
+
+
+    @endif
   </div>
 </div>
 

@@ -36,14 +36,9 @@ class HospitalController extends Controller
 
         $user = User::find(Auth::user()->id);
         $user->hospitals()->save($hospital);
-        // $patient->patientAppointement()->save($hospital);
-        // $user = User::find(Auth::user()->id);
-
-
-
-        // $user->doctorAppointement()->save($hospital);
-        // $patient = User::find(2);
-        // $patient->patientAppointement()->save($hospital);
+       
+        // Redirection avec des mesages flashbag dans la sessions
+        return redirect('/user/profile/complete')->with(['success-hospital' => 'Les informations ont été renseigné avec succès !']);
 
 
     }

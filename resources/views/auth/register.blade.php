@@ -1,107 +1,254 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <x-jet-validation-errors class="mb-4" />
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+        <title>Doctosen - @yield("title")</title>
 
-            {{-- <div>
+        <!-- CSS FILES -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
 
-                <x-jet-label for="patient" value="Je suis un patient" />
-                <x-jet-input id="userTypePatient" class="block mt-1 w-full" type="radio" name="userType" :value="old('userTypePatient')" required autofocus autocomplete="userTypePatient" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-                <x-jet-label for="userType" value="Je suis un professionel de la santé" />
-                <x-jet-input id="userTypeDoctor" class="block mt-1 w-full" type="radio" name="userType" :value="old('userTypeDoctor')" required autofocus autocomplete="userTypeDoctor" />
-            </div> --}}
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="patient" name="type">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Je suis un patient
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" value="doctor" name="type" >
-                <label class="form-check-label" for="flexCheckChecked">
-                    Je suis un professionel de la santé
-                </label>
-              </div>
+       
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
 
-            {{-- <div>
-                <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div> --}}
+            <link href="../../../../../css/bootstrap-icons.css" rel="stylesheet">
 
-            <div>
-                <x-jet-label for="firstName" value="{{ __('FirstName') }}" />
-                <x-jet-input id="firstName" class="block mt-1 w-full" type="text" name="first_name" :value="old('firstName')" required autofocus autocomplete="firstName" />
-            </div>
+            <link href="../../../../../css/owl.carousel.min.css" rel="stylesheet">
 
-            <div>
-                <x-jet-label for="lastName" value="{{ __('lastName') }}" />
-                <x-jet-input id="lastName" class="block mt-1 w-full" type="text" name="last_name" :value="old('lastName')" required autofocus autocomplete="lastName" />
-            </div>
+            <link href="../../../../../css/owl.theme.default.min.css" rel="stylesheet">
 
-            <div class="mt-4">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
-            </div>
+            <link href="../../../../../css/templatemo-medic-care.css" rel="stylesheet">
 
-            <div class="mt-4">
-                <x-jet-label for="phone" value="{{ __('Phone') }}" />
-                <x-jet-input id="phone" class="block mt-1 w-full" type="number" name="phone" :value="old('phone')" required />
-            </div>
+    
+<!--
 
-            <div class="mt-4">
-                <x-jet-label for="title" value="{{ __('Votre titre / métier') }}" />
-                <x-jet-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required />
-            </div>
+TemplateMo 566 Medic Care
 
-            <div class="mt-4">
-                <x-jet-label for="adress" value="{{ __('Adress') }}" />
-                <x-jet-input id="adress" class="block mt-1 w-full" type="text" name="adress" :value="old('adress')" required />
-            </div>
+https://templatemo.com/tm-566-medic-care
 
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
+-->
+    </head>
 
-            <div class="mt-4">
-                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
+    <body id="top">
 
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-jet-label for="terms">
-                        <div class="flex items-center">
-                            <x-jet-checkbox name="terms" id="terms"/>
+        <main>
 
-                            <div class="ml-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Privacy Policy').'</a>',
-                                ]) !!}
+            @include("menu")
+            
+         
+          
+
+          
+
+         
+
+     
+
+        
+
+         
+
+          
+
+            <section class="section-padding" id="booking">
+                <div class="container">
+                    
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <div class="booking-form">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach  ($errors->all() as $error)
+                                            <li>{{$error}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                
+                            @endif
+                        
+    
+                            {!! Form::open(['url' => route('register'), 'class' => 'row g-3 needs-validation', 'id' => 'registration-form']) !!}
+
+                            
+
+                            <div class="col-md-12">
+                               
+                                {{Form::label('type', 'Je suis un professionnel de la santé', ['class' => 'form-label'])}}
+                                {{ Form::radio('type', 'doctor', ['class' => 'form-control', 'required' => 'required']) }}
+                     
                             </div>
+
+                           
+
+                            <div class="col-md-12">
+                               
+                                {{Form::label('type', "Je suis un responsable d'une structure sanitaire", ['class' => 'form-label'])}}
+                                {{ Form::radio('type', 'hospital', ['class' => 'form-control', 'required' => 'required']) }}
+                     
+                            </div>
+
+                             <div class="col-md-12">
+                               
+                                {{Form::label('type', 'Je suis un patient', ['class' => 'form-label'])}}
+                                {{ Form::radio('type', 'patient', ['class' => 'form-control', 'required' => 'required']) }}
+                     
+                            </div>
+
+                             <div class="col-md-6">
+                               
+                                {{Form::label('first_name', "Prénom", ['class' => 'form-label'])}}
+                                {{ Form::text('first_name', null, ['class' => 'form-control', 'placeholder' => 'Zackariya', 'required' => 'required']) }}
+                     
+                            </div>
+
+                            <div class="col-md-6">
+                               
+                                {{Form::label('last_name', "Nom", ['class' => 'form-label'])}}
+                                {{ Form::text('last_name', null, ['class' => 'form-control', 'placeholder' => 'Tounkara', 'required' => 'required']) }}
+                     
+                            </div>
+
+                       
+
+                            <div class="col-md-6">
+                               
+                                {{Form::label('email', "Email", ['class' => 'form-label'])}}
+                                {{ Form::email('email', null,['class' => 'form-control', 'placeholder' => 'zack@gmail.com', 'required' => 'required']) }}
+                     
+                            </div>
+
+                            <div class="col-md-6">
+                               
+                                {{Form::label('phone', "Téléphone", ['class' => 'form-label'])}}
+                                {{ Form::number('phone', null, ['class' => 'form-control', 'placeholder' => '775412365', 'required' => 'required']) }}
+                     
+                            </div>
+
+                            <div class="col-md-6">
+                               
+                                {{Form::label('adress', "Adresse", ['class' => 'form-label'])}}
+                                {{ Form::text('adress', null, ['class' => 'form-control', 'placeholder' => 'ouakam', 'required' => 'required']) }}
+                     
+                            </div>
+
+                            <div class="col-md-6">
+                               
+                                {{Form::label('title', "Votre profession", ['class' => 'form-label'])}}
+                                {{ Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Cardiologue, Etudiant, Enseignat, Mécanicien', 'required' => 'required']) }}
+                     
+                            </div>
+
+                            <div class="col-md-6">
+                               
+                                {{Form::label('password', "Mot de passe", ['class' => 'form-label'])}}
+                                {{ Form::password('password', ['class' => 'form-control', 'required' => 'required']) }}
+                     
+                            </div>
+
+                            <div class="col-md-6">
+                               
+                                {{Form::label('password_confirmation', "Confirmer le mot de passe", ['class' => 'form-label'])}}
+                                {{ Form::password('password_confirmation', ['class' => 'form-control', 'required' => 'required']) }}
+                     
+                            </div>
+                            
+                             <div class="col-12">
+                               {{ Form::submit("Je m'inscris !", ['class' => 'btn btn-primary'])}}
+                               
+                            </div>
+                            {!! Form::close() !!}
                         </div>
-                    </x-jet-label>
+                    </div>
                 </div>
-            @endif
+            </section>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
+        
 
-                <x-jet-button class="ml-4">
-                    {{ __('Register') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+        </main>
+
+
+    
+        <footer class="site-footer section-padding" id="contact">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-5 me-auto col-12">
+                        <h5 class="mb-lg-4 mb-3">Opening Hours</h5>
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex">
+                                Sunday : Closed
+                            </li>
+
+                            <li class="list-group-item d-flex">
+                                Monday, Tuesday - Firday
+                                <span>8:00 AM - 3:30 PM</span>
+                            </li>
+
+                            <li class="list-group-item d-flex">
+                                Saturday
+                                <span>10:30 AM - 5:30 PM</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 col-12 my-4 my-lg-0">
+                        <h5 class="mb-lg-4 mb-3">Our Clinic</h5>
+
+                        <p><a href="mailto:hello@company.co">hello@company.co</a><p>
+
+                        <p>123 Digital Art Street, San Diego, CA 92123</p>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-12 ms-auto">
+                        <h5 class="mb-lg-4 mb-3">Socials</h5>
+
+                        <ul class="social-icon">
+                            <li><a href="#" class="social-icon-link bi-facebook"></a></li>
+
+                            <li><a href="#" class="social-icon-link bi-twitter"></a></li>
+
+                            <li><a href="#" class="social-icon-link bi-instagram"></a></li>
+
+                            <li><a href="#" class="social-icon-link bi-youtube"></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-12 ms-auto mt-4 mt-lg-0">
+                        <p class="copyright-text">Copyright © Medic Care 2021
+                        <br><br>Design: <a href="https://templatemo.com" target="_parent">TemplateMo</a></p>
+                    </div>
+
+                </div>
+            </section>
+        </footer>
+
+     
+
+  
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/scrollspy.min.js"></script>
+        <script src="js/custom.js"></script>
+
+       
+<!--
+
+TemplateMo 566 Medic Care
+
+https://templatemo.com/tm-566-medic-care
+
+-->
+    </body>
+</html>

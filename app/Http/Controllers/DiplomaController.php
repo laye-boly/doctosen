@@ -69,5 +69,12 @@ class DiplomaController extends Controller
         $user = User::find(Auth::user()->id);
         $user->diplomas()->save($diploma);
 
+        // Redirection avec des mesages flashbag dans la sessions
+        return redirect('/user/profile/complete')->with([
+            'success-diploma' => 'Votre document a été bien uplodé'
+            
+            
+        ]);
+
     }
 }
