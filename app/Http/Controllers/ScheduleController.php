@@ -26,8 +26,18 @@ class ScheduleController extends Controller
      */
 
     public function create(Request $request){
+
         $errorTime = "no";
         $errorDate = "no";
+    
+        if($request->has('errorTime')){
+            $errorTime = $request->input("errorTime");
+        }
+
+        if($request->has('errorDate')){
+            $errorDate = $request->input("errorDate");
+        }
+        
         return view('schedules.create')->with(["errorTime" => $errorTime, "errorDate" => $errorDate]);
     }
 
@@ -50,6 +60,7 @@ class ScheduleController extends Controller
 
             'consultationDuration'  => 'required'
         ]);
+
         $starTime =  $request->input('startTime');
         $endTime = $request->input('endTime');
         // On convertis les heures de disponibilité en timestamp unix (le nbre de secondes depuis le 1 janvier 1970 00:00:00 UTC)
@@ -89,9 +100,20 @@ class ScheduleController extends Controller
     }
 
     public function edit(Request $request, $id){
+        
+        $schedule = Schedule::findOrFail($id);
+
         $errorTime = "no";
         $errorDate = "no";
-        $schedule = Schedule::findOrFail($id);
+    
+        if($request->has('errorTime')){
+            $errorTime = $request->input("errorTime");
+        }
+
+        if($request->has('errorDate')){
+            $errorDate = $request->input("errorDate");
+        }
+        
         return view('schedules.edit')->with(["errorTime" => $errorTime, "errorDate" => $errorDate, "schedule" => $schedule]);
     }
 

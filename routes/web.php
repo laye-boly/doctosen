@@ -9,6 +9,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointementController;
 use App\Http\Controllers\MedicalDocumentController;
 use App\Http\Controllers\VaccineController;
+use App\Http\Controllers\VaccineScheduleController;
 
 
 
@@ -141,7 +142,39 @@ Route::middleware(['auth','complete.registration'])->group(function () {
         ->name("vaccine.delete")
         ->withoutMiddleware(['complete.registration']);
     
-    // Fin route pour les structure sanitaires
+    // Fin route pour les vaccin
+
+    // début route pour les emploi de temps des vaccins
+
+    Route::get('/user/vaccine/schedule', [VaccineScheduleController::class, "index"])
+        ->name("vaccine.schedule.index")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::get('/user/vaccine/schedule/create', [VaccineScheduleController::class, "create"])
+        ->name("vaccine.schedule.create")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/vaccine/schedule/store', [VaccineScheduleController::class, "store"])
+        ->name("vaccine.schedule.store")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::get('/user/vaccine/schedule/show/{vaccineSchedule}', [VaccineScheduleController::class, "show"])
+        ->name("vaccine.schedule.show")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::get('/user/vaccine/schedule/edit/{vaccineSchedule}', [VaccineScheduleController::class, "edit"])
+        ->name("vaccine.schedule.edit")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::post('/user/vaccine/update/{vaccineSchedule}', [VaccineScheduleController::class, "update"])
+        ->name("vaccine.schedule.update")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/vaccine/delete/{vaccineSchedule}', [VaccineScheduleController::class, "delete"])
+        ->name("vaccine.schedule.delete")
+        ->withoutMiddleware(['complete.registration']);
+    
+        // Fin routes pour les emploi de temps pour les vaccins
      
 
     Route::get('/dashboard/doctor/schedule/create', [ScheduleController::class, "create"])->name("schedule.create");
