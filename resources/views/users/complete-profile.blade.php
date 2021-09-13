@@ -109,129 +109,127 @@ https://templatemo.com/tm-566-medic-care
 
             <section class="hero" id="hero">
                 <div class="container">
-                <div class="alert alert-info" role="alert">
-  Complétez votre profil avant de pouvoir commencer les consultations.
-</div>
+                    <div class="alert alert-info" role="alert">
+                        Complétez votre profil avant de pouvoir commencer les consultations.
+                    </div>
                     <div class="row">
-<div class="card col-md-6">
-  <div class="card-header">
-    Renseignement sur votre structure sanitaire
-  </div>
-  <div class="card-body">
-    @if ($errors->has("name") || $errors->has("phone") || $errors->has("adress "))
-        <div class="alert alert-danger">
-            <ul>
+                        <div class="card col-md-6">
+                            <div class="card-header">
+                                Renseignement sur votre structure sanitaire
+                            </div>
+                            <div class="card-body">
+                                @if ($errors->has("name") || $errors->has("phone") || $errors->has("adress "))
+                                    <div class="alert alert-danger">
+                                        <ul>
 
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
 
-            </ul>
-        </div>
-    @endif
+                                        </ul>
+                                    </div>
+                                @endif
 
-    @if (count($hospitals) == 0 )
-        
-   
-         {!! Form::open(['url' => '/user/profile/complete/hospital/store']) !!}
-        <div class="form-group">
-            {{Form::label('nom ', 'nom')}}
-            {{Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'nom du lieu de travail'])}}
-        </div>
-        <div class="form-group">
-            {{Form::label('adress ', 'adresse')}}
-            {{Form::text('adress', '', ['class' => 'form-control', 'placeholder' => 'adresse du lieu de travail'])}}
-        </div>
-        <div class="form-group">
-            {{Form::label('phone ', 'téléphone')}}
-            {{Form::text('phone', '', ['class' => 'form-control', 'placeholder' => 'lieu de travail'])}}
-        </div>
+                                @if (count($hospitals) == 0 )
+                                    
+                            
+                                    {!! Form::open(['url' => '/user/profile/complete/hospital/store']) !!}
+                                    <div class="form-group">
+                                        {{Form::label('nom ', 'nom')}}
+                                        {{Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'nom du lieu de travail'])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('adress ', 'adresse')}}
+                                        {{Form::text('adress', '', ['class' => 'form-control', 'placeholder' => 'adresse du lieu de travail'])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('phone ', 'téléphone')}}
+                                        {{Form::text('phone', '', ['class' => 'form-control', 'placeholder' => 'lieu de travail'])}}
+                                    </div>
+                                    {{Form::hidden('uri', '/user/profile/complete')}}
 
-        {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
-        {!! Form::close() !!}
+                                    {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+                                    {!! Form::close() !!}
 
-    @else
+                                @else
 
-        @if (session('success-hospital'))
-        <div class="alert alert-success">
-            <p>{{ session('success-hospital') }}</p> 
-            
-        </div>
-        @else
-        <p class="text-start">Vous avez déja renseigné cette partie</p>
-        @endif
-        <div class="text-end"><a href="{{route('hospital.show', ['hospital' => $hospitals[0]->id])}}">Voir les détails</a></div>
-        <p class="text-end"><a href="{{route('hospital.edit', ['hospital' => $hospitals[0]->id])}}">Modifier</a></p>
+                                    @if (session('success-hospital'))
+                                    <div class="alert alert-success">
+                                        <p>{{ session('success-hospital') }}</p> 
+                                        
+                                    </div>
+                                    @else
+                                    <p class="text-start">Vous avez déja renseigné cette partie</p>
+                                    @endif
+                                    <div class="text-end"><a href="{{route('hospital.show', ['hospital' => $hospitals[0]->id])}}">Voir les détails</a></div>
+                                    <p class="text-end"><a href="{{route('hospital.edit', ['hospital' => $hospitals[0]->id])}}">Modifier</a></p>
 
-    @endif
-  </div>
-</div>
+                                @endif
+                            </div>
+                            </div>
+                            @if(Auth::user()->type != "hospital")
+                            <div class="card col-md-6">
+                            <div class="card-header">
+                                Télécharger votre diplôme principal
+                            </div>
+                            <div class="card-body">
+                            @if ($errors->has("title") || $errors->has("year") || $errors->has("image "))
+                                <div class="alert alert-danger">
+                                    <ul>
 
-<div class="card col-md-6">
-  <div class="card-header">
-    Télécharger votre diplôme principal
-  </div>
-  <div class="card-body">
-   @if ($errors->has("title") || $errors->has("year") || $errors->has("image "))
-    <div class="alert alert-danger">
-        <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
 
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
+                                    </ul>
+                                </div>
+                                @endif
 
-        </ul>
-    </div>
-    @endif
+                            
 
-   
+                                @if (count($diplomas) == 0)
 
-    @if (count($diplomas) == 0)
+                                    {!! Form::open(['url' => '/user/profile/complete/diploma/store', 'files' => true]) !!}
 
-         {!! Form::open(['url' => '/user/profile/complete/diploma/store', 'files' => true]) !!}
+                                    <div class="form-group">
+                                        {{Form::label('title ', 'titre du diplome')}}
+                                        {{Form::text('title', '', ['class' => 'form-control', 'placeholder' => 'le titre du diplome'])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('year ', "année d'obtention du diplôme")}}
+                                        {{Form::text('year', '', ['class' => 'form-control', 'placeholder' => "année d'obtention du diplôme"])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('image', "télécharger votre diplôme ")}}
+                                        {{Form::file('image')}}
+                                    </div>
 
-        <div class="form-group">
-            {{Form::label('title ', 'titre du diplome')}}
-            {{Form::text('title', '', ['class' => 'form-control', 'placeholder' => 'le titre du diplome'])}}
-        </div>
-        <div class="form-group">
-            {{Form::label('year ', "année d'obtention du diplôme")}}
-            {{Form::text('year', '', ['class' => 'form-control', 'placeholder' => "année d'obtention du diplôme"])}}
-        </div>
-         <div class="form-group">
-            {{Form::label('image', "télécharger votre diplôme ")}}
-            {{Form::file('image')}}
-        </div>
+                                    {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+                                {!! Form::close() !!}
 
-        {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
-    {!! Form::close() !!}
-
-    @else
-        @if (session('success-diploma'))
-            <div class="alert alert-success">
-            <p>{{ session('success-diploma') }}</p> 
-            
-        </div>
-        @else
-        <p class="text-start">Vous avez déja uploadé votre diplôme</p>
-        @endif
-        <p class="text-end"><a href="{{route('diploma.show', ['diploma' => $diplomas[0]->id])}}">Voir les détails</a></p>
-        <p class="text-end"><a href="{{route('diploma.edit', ['diploma' => $diplomas[0]->id])}}">Modifier</a></p>
-
-
-    @endif
-  </div>
-</div>
+                                @else
+                                    @if (session('success-diploma'))
+                                        <div class="alert alert-success">
+                                        <p>{{ session('success-diploma') }}</p> 
+                                        
+                                    </div>
+                                    @else
+                                    <p class="text-start">Vous avez déja uploadé votre diplôme</p>
+                                    @endif
+                                    <p class="text-end"><a href="{{route('diploma.show', ['diploma' => $diplomas[0]->id])}}">Voir les détails</a></p>
+                                    <p class="text-end"><a href="{{route('diploma.edit', ['diploma' => $diplomas[0]->id])}}">Modifier</a></p>
 
 
+                                @endif
+                            </div>
+                            </div>
+
+                            @endif
+                        </div>
+                    </div>
 
 
-
-
-
-
-
-
+            </section>
 
         </main>
 

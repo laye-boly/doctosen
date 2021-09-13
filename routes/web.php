@@ -8,6 +8,7 @@ use App\Http\Controllers\DiplomaController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointementController;
 use App\Http\Controllers\MedicalDocumentController;
+use App\Http\Controllers\VaccineController;
 
 
 
@@ -29,9 +30,9 @@ use App\Http\Controllers\MedicalDocumentController;
 //     return view('welcome');
 // });
 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 
 
 
@@ -46,15 +47,25 @@ Route::middleware(['auth','complete.registration'])->group(function () {
         ->name("complete.create")
         ->withoutMiddleware(['complete.registration']);
 
+    // début route pour les structures sanitaire 
+
+    Route::get('/user/profile/complete/hospital', [HospitalController::class, "index"])
+        ->name("hospital.index")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::get('/user/profile/complete/hospital/create', [HospitalController::class, "create"])
+        ->name("hospital.create")
+        ->withoutMiddleware(['complete.registration']);
+
     Route::post('/user/profile/complete/hospital/store', [HospitalController::class, "store"])
         ->name("hospital.store")
         ->withoutMiddleware(['complete.registration']);
 
-    Route::post('/user/profile/complete/hospital/show', [HospitalController::class, "show"])
+    Route::get('/user/profile/complete/hospital/show/{hospital}', [HospitalController::class, "show"])
         ->name("hospital.show")
         ->withoutMiddleware(['complete.registration']);
 
-    Route::post('/user/profile/complete/hospital/edit', [HospitalController::class, "edit"])
+    Route::get('/user/profile/complete/hospital/edit{hospital}', [HospitalController::class, "edit"])
         ->name("hospital.edit")
         ->withoutMiddleware(['complete.registration']);
     
@@ -62,21 +73,76 @@ Route::middleware(['auth','complete.registration'])->group(function () {
         ->name("hospital.update")
         ->withoutMiddleware(['complete.registration']);
 
+    Route::post('/user/profile/complete/hospital/delete/{hospital}', [HospitalController::class, "delete"])
+        ->name("hospital.delete")
+        ->withoutMiddleware(['complete.registration']);
+    
+    // Fin route pour les structure sanitaires
+
+    // début routes pour les diplômes
+
     Route::post('/user/profile/complete/diploma/store', [DiplomaController::class, "store"])
         ->name("diploma.store")
         ->withoutMiddleware(['complete.registration']);
 
-     Route::post('/user/profile/complete/diploma/show', [DiplomaController::class, "show"])
+     Route::get('/user/profile/complete/diploma/show/{diploma}', [DiplomaController::class, "show"])
         ->name("diploma.show")
         ->withoutMiddleware(['complete.registration']);
 
-    Route::post('/user/profile/complete/diploma/edit', [DiplomaController::class, "edit"])
+    Route::get('/user/profile/complete/diploma/edit/{diploma}', [DiplomaController::class, "edit"])
         ->name("diploma.edit")
         ->withoutMiddleware(['complete.registration']);
 
-    Route::post('/user/profile/complete/diploma/update', [DiplomaController::class, "update"])
+    Route::post('/user/profile/complete/diploma/update/{diploma}', [DiplomaController::class, "update"])
         ->name("diploma.update")
         ->withoutMiddleware(['complete.registration']);
+
+    Route::get('/user/profile/complete/diploma/download/{filename}', [DiplomaController::class, "download"])
+        ->name("diploma.download");
+    
+    Route::get('/user/profile/complete/diploma', [DiplomaController::class, "index"])
+        ->name("diploma.index");
+    
+    Route::get('/user/profile/complete/diploma/create', [DiplomaController::class, "create"])
+        ->name("diploma.create");
+    
+    Route::post('/user/profile/complete/diploma/delete/{diploma}', [DiplomaController::class, "delete"])
+        ->name("diploma.delete");
+
+    // Fin routes pour les diplômes
+
+    // début route pour les vaccins
+
+    Route::get('/user/vaccine', [VaccineController::class, "index"])
+        ->name("vaccine.index")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::get('/user/vaccine/create', [VaccineController::class, "create"])
+        ->name("vaccine.create")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/vaccine/store', [VaccineController::class, "store"])
+        ->name("vaccine.store")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::get('/user/vaccine/show/{vaccine}', [VaccineController::class, "show"])
+        ->name("vaccine.show")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::get('/user/vaccine/edit/{vaccine}', [VaccineController::class, "edit"])
+        ->name("vaccine.edit")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::post('/user/vaccine/update/{vaccine}', [VaccineController::class, "update"])
+        ->name("vaccine.update")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/vaccine/delete/{vaccine}', [VaccineController::class, "delete"])
+        ->name("vaccine.delete")
+        ->withoutMiddleware(['complete.registration']);
+    
+    // Fin route pour les structure sanitaires
+     
 
     Route::get('/dashboard/doctor/schedule/create', [ScheduleController::class, "create"])->name("schedule.create");
     Route::get('/dashboard/doctor/schedule', [ScheduleController::class, "index"])->name("schedule.index");

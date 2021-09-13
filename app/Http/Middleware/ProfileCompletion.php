@@ -28,13 +28,13 @@ class ProfileCompletion
 
       
         if($user->type == "doctor" || $user->type == "hospital"){
-            // dd("doc hos");
-            if(count($user->hospitals->toArray()) == 0){
+            
+            if(count($user->hospitals) == 0){
                 return redirect("/user/profile/complete");
-                dd(0);
+               
             }
 
-            if($user->type == "doctor" && count($user->diplomas->toArray()) == 0){
+            if($user->type == "doctor" && count($user->diplomas) == 0){
                 return redirect("/user/profile/complete");
             }
         }
