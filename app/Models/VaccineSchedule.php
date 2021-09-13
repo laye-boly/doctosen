@@ -20,4 +20,12 @@ class VaccineSchedule extends Model
     {
         return $this->belongsToMany(Vaccine::class, "vaccines_schedules_vaccines", "vaccine_schedule_id", "vaccine_id");
     }
+
+     /**
+     * Définition de la relation inverse (many-to-one) entre Patient et VaccineSchedule
+     */
+    public function vaccineAppointement()
+    {
+        return $this->hasMany(VaccineAppointement::class, "vaccine_schedule_id");
+    }
 }

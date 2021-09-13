@@ -135,6 +135,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(MedicalDocument::class, "patient_id");
     }
 
+    /**
+     * Définition de la relation inverse (many-to-one) entre Patient et VaccineAppointement
+     */
+    public function patientVaccineAppointement()
+    {
+        return $this->hasMany(VaccineAppointement::class, "patient_id");
+    }
+
      // end - relationships defintion
 
     public function toString(){

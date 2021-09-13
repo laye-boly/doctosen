@@ -10,6 +10,7 @@ use App\Http\Controllers\AppointementController;
 use App\Http\Controllers\MedicalDocumentController;
 use App\Http\Controllers\VaccineController;
 use App\Http\Controllers\VaccineScheduleController;
+use App\Http\Controllers\VaccineAppointementController;
 
 
 
@@ -166,15 +167,47 @@ Route::middleware(['auth','complete.registration'])->group(function () {
         ->name("vaccine.schedule.edit")
         ->withoutMiddleware(['complete.registration']);
     
-    Route::post('/user/vaccine/update/{vaccineSchedule}', [VaccineScheduleController::class, "update"])
+    Route::post('/user/vaccine/schedule/update/{vaccineSchedule}', [VaccineScheduleController::class, "update"])
         ->name("vaccine.schedule.update")
         ->withoutMiddleware(['complete.registration']);
 
-    Route::post('/user/vaccine/delete/{vaccineSchedule}', [VaccineScheduleController::class, "delete"])
+    Route::post('/user/vaccine/schedule/delete/{vaccineSchedule}', [VaccineScheduleController::class, "delete"])
         ->name("vaccine.schedule.delete")
         ->withoutMiddleware(['complete.registration']);
     
         // Fin routes pour les emploi de temps pour les vaccins
+    
+    // début route pour rendez-vous de vaccination
+
+    Route::get('/user/vaccine/appointement', [VaccineAppointementController::class, "index"])
+        ->name("vaccine.appointement.index")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::get('/user/vaccine/appointement/create', [VaccineAppointementController::class, "create"])
+        ->name("vaccine.appointement.create")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/vaccine/appointement/store', [VaccineAppointementController::class, "store"])
+        ->name("vaccine.appointement.store")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::get('/user/vaccine/appointement/show/{vaccineAppointement}', [VaccineAppointementController::class, "show"])
+        ->name("vaccine.appointement.show")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::get('/user/vaccine/appointement/edit/{vaccineAppointement}', [VaccineAppointementController::class, "edit"])
+        ->name("vaccine.appointement.edit")
+        ->withoutMiddleware(['complete.registration']);
+    
+    Route::post('/user/vaccine/appointement/update/{vaccineAppointement}', [VaccineAppointementController::class, "update"])
+        ->name("vaccine.appointement.update")
+        ->withoutMiddleware(['complete.registration']);
+
+    Route::post('/user/vaccine/appointement/delete/{vaccineAppointement}', [VaccineAppointementController::class, "delete"])
+        ->name("vaccine.appointement.delete")
+        ->withoutMiddleware(['complete.registration']);
+    
+        // Fin routes pour les rendez-vous de vaccination 
      
 
     Route::get('/dashboard/doctor/schedule/create', [ScheduleController::class, "create"])->name("schedule.create");

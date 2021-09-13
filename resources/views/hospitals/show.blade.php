@@ -65,7 +65,6 @@ https://templatemo.com/tm-566-medic-care
                         <div class="col-lg-8 col-12 mx-auto">
                             <div class="booking-form">
                                
-                                <h5 class="text-center mb-lg-3 mb-2"> Type du dossier médical : {{$document->type}}</h5>
                                 <div class="text-center mb-lg-3 mb-2">
                                     <h6>Information sur la structure de santé du médecin</h6>
                                     <p>Nom : {{$principalHospital->name}}</p>
@@ -74,65 +73,91 @@ https://templatemo.com/tm-566-medic-care
                                 </div>
 
                                 <div>
-                                    <div class="text-start mb-lg-3 mb-2">
-                                        <h6>Information sur le patient</h6>
-                                        <p>Prénom : {{$document->patient->first_name}}</p>
-                                        <p>Nom : {{$document->patient->last_name}}</p>
-                                        <p>Téléphone : {{$document->patient->phone}}</p>
-                                        <p>Adresse : {{$document->patient->adress}}</p>
-                                    </div>
-                                    <div class="text-center mb-lg-3 mb-2">
-                                        <h6>Corps du document</h6>
-                                        @if ($document->upload == 0)
-                                            <p>{{$document->body}}</p>
+                                    @if($principalHospital->vaccines)
+                                        <h6>Mes vaccins</h6>
+                                        <div class="accordion" id="accordionVaccine">
+                                            @foreach ($principalHospital->vaccines as $vaccine )
 
-                                        @else
-                                            <p>
-                                                Ce document à été uploadé dans la plateforme
-                                                Vous pouvez le télécharger en cliquant <a href="{{route('medical.downloadMedicalDocument', ['filename' => $document->body])}}">ici</a>
-                                            </p>
-                                            
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$vaccine->id}}" aria-expanded="true" aria-controls="collapseOne">
+                                                    <p>Nom du vaccin : {{$vaccine->name}}</p>
+                                                    <p>Type du vaccin : {{$vaccine->type}}</p>
+                                                    <p>Quantité disponible: {{$vaccine->total}}</p>
+                                                  </button>
+                                                </h2>
+                                                <div id="collapse{{$vaccine->id}}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionVaccine">
+                                                  <div class="accordion-body">
+                                                    @if ($vaccine->schedules)
+                                                        <strong>Emploi du temps du vaccins.</strong> 
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                              <tr>
+                                                                <th>Date</th>
+                                    
+                                                                <th>Heure du début</th>
+                                                                
+                                                                <th>Heure de fin</th>
 
-                                        @endif
-                                    </div>
-
-                                    <div class="text-start mb-lg-3 mb-2">
-                                        <h6>Information sur le médecin</h6>
-                                        <p>Prénom : {{$author->first_name}}</p>
-                                        <p>Nom : {{$author->last_name}}</p>
-                                        <p>Téléphone : {{$author->phone}}</p>
-                                        <p>Adresse : {{$author->adress}}</p>
-                                    </div>
-                                </div>
-                                </div>
-                              
-                                    <h6 class="text-center mb-lg-3 mb-2">Médecins ayant accés au documents</h6>
-                                    <table class="table table-striped">
-                                        <thead>
-                                          <tr>
-                                            <th>prenom et nom du médecin</th>
-                                            <th>spécialite</th>
-                                            <th>téléphone</th>
-                                            <th>adresse</th>
-                                          
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach ($doctors as $doctor)
-                                        <tr>
-                                            <td>{{$doctor->first_name }} {{$doctor->last_name}}</td>
-                                                    <td>{{$doctor->title}}</td>
-                                                    <td>{{$doctor->phone }}</td>
-                                                    <td>{{$doctor->adress }}</td>
-                                                  
-                                          </tr>
-                                        @endforeach
-    
-                                    </tbody>
-                                </table>
-                               
-                       
-
+                                                                <th>Prendre un rv</th>
+                                                                @if($principalHospital->user_id == Auth::user()->id)
+                                                                <th>Modifier</th>
+                                                
+                                                                <th>Supprimer</th>
+                                                                @endif
+                                                              
+                                                              </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($vaccine->schedules as $schedule)
+                                                                <tr>
+                                                                    <td>
+                                                                       
+                                    
+                                                                        
+                                                                        {{ $schedule->schedule_date }} 
+                                                                        
+                                                                </td>
+                                                                    
+                                                                    <td>{{ $schedule->start_time }}</td>
+                                                                    <td>{{ $schedule->end_time }}</td>
+                                                               
+                                                                    <td><a href="{{ route('vaccine.appointement.create', ['schedule_id' => $schedule->id, 'patient_id' => Auth::user()->id]) }}">Prendre un rv</a></td>
+                                                                
+                                                                 @if ($principalHospital->user_id == Auth::user()->id)
+                                                                 
+                                                                
+                                                                    <td>
+                                                                        <a class="btn btn-info" href="{{route('vaccine.schedule.edit', ['vaccineSchedule' => $schedule->id])}}">Modifier l'emploi du temps</a>
+                                                                    </td>
+                                                                <td>
+                                                                   
+                                                                        {!! Form::open(['url'  => route('vaccine.schedule.delete', ['vaccineSchedule' => $schedule->id])]) !!}
+                            
+                                                                        {{Form::hidden('schedule-id', $schedule->id)}}
+                            
+                                                                        {{Form::submit("supprimer l'emploi du temps", ['class' => 'btn btn-danger'])}}
+                                                                        
+                                                                        {!! Form::close() !!}
+                                                                    </td>
+                                                                    
+                                                                    @endif 
+                                                                  </tr>
+                                                                @endforeach
+                            
+                                                        </tbody>
+                                                    </table>
+                                                    @else
+                                                        <strong>Ce vaccin n'a pas d'emploi de temps associé.</strong> 
+                                                    @endif
+                                                   
+                                                  </div>
+                                                </div>
+                                              </div>
+                                                
+                                            @endforeach
+                                        </div>
+                                    @endif
                     
                 </div>
             </section>
@@ -203,11 +228,11 @@ https://templatemo.com/tm-566-medic-care
   
 
         <!-- JAVASCRIPT FILES -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/scrollspy.min.js"></script>
-        <script src="js/custom.js"></script>
+        <script src="../../../../../js/jquery.min.js"></script>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script src="../../../../../js/owl.carousel.min.js"></script>
+        <script src="../../../../../js/scrollspy.min.js"></script>
+        <script src="../../../../../js/custom.js"></script>
 
        
 <!--

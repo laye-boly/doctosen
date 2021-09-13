@@ -266,7 +266,7 @@ class VaccineScheduleController extends Controller
     }
 
     public function delete(Request $request, VaccineSchedule $vaccineSchedule){
-       dd("ko woni");
+       
         $this->validate($request, [
             'vaccine-id' => [
                         Rule::in([$vaccineSchedule->id]),

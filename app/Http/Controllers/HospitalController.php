@@ -68,5 +68,9 @@ class HospitalController extends Controller
 
     }
 
+    public function show(Hospital $hospital){
+        return view("hospitals.show")->with(['principalHospital' => $hospital]);
+    }
+
    
 }
