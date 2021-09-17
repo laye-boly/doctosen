@@ -228,5 +228,7 @@ class VaccineAppointementController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('vaccine_appointements.download', compact('patient', 'appointement'));
         return $pdf->download('rendez_vous_vaccination.pdf');
+
+        // ok ok
     }
 }
