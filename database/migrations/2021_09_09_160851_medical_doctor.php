@@ -13,8 +13,8 @@ class MedicalDoctor extends Migration
      */
     public function up()
     {
-        Schema::table('medical_doctor', function (Blueprint $table) {
-           
+        Schema::create('medical_doctor', function (Blueprint $table) {
+            
             $table->id();
             $table->integer("doctor_id")->nullable();
             $table->integer("medical_id")->nullable();
@@ -22,6 +22,10 @@ class MedicalDoctor extends Migration
            
             $table->timestamps();
         });
+       
+           
+            
+        
     }
 
     /**
