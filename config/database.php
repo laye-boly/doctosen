@@ -1,5 +1,7 @@
 <?php
 
+$DATABASE_URL=parse_url('DATABASE_URL'); // add for heroku deploiement
+
 use Illuminate\Support\Str;
 
 return [
@@ -15,7 +17,8 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    // 'default' => env('DB_CONNECTION', 'mysql'), default
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -66,11 +69,16 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            // 'host' => env('DB_HOST', '127.0.0.1'), // default
+            'host' => $DATABASE_URL["host"], // pour heroku
+            // 'port' => env('DB_PORT', '5432'), // defeult
+            'port' => $DATABASE_URL['port'], // pour heroku
+            // 'database' => env('DB_DATABASE', 'forge'), default
+            'database' => ltrim($DATABASE_URL["path"], "/"),
+            // 'username' => env('DB_USERNAME', 'forge'), default
+            'username' => $DATABASE_URL["user"], // heroku
+            // 'password' => env('DB_PASSWORD', ''), default
+            'password' => $DATABASE_URL["pass"], // heroku
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
