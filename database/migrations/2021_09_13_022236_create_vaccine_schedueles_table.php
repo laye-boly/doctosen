@@ -19,6 +19,7 @@ class CreateVaccineScheduelesTable extends Migration
             $table->char('start_time', 5);
             $table->char('end_time', 5);
             $table->integer('status'); // 0 ou 1 pour indiquer si l'emploi de temps est activé ou non
+            $table->softDeletes();
             $table->timestamps();
         });
     }
