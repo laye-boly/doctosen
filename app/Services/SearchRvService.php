@@ -224,10 +224,10 @@ class SearchRvService {
     }
 
     public function getData(){
-        if($this->table = "hospitals"){
-            dd($this->search()->get());
+        // if($this->table = "hospitals"){
+        //     dd($this->search()->get());
 
-        }
+        // }
         return $this->search()->paginate(5);
     }
     
