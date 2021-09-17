@@ -17,7 +17,7 @@ class CreateMedicalDocumentsTable extends Migration
             $table->id();
             $table->mediumText("body");
             $table->string("type");
-            $table->integer("doctor_id")->nullable();
+            $table->integer("author_id")->nullable();
             $table->integer("patient_id")->nullable();
             $table->timestamps();
         });

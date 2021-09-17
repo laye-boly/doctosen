@@ -18,6 +18,7 @@ class MedicalDoctor extends Migration
             $table->id();
             $table->integer("doctor_id")->nullable();
             $table->integer("medical_id")->nullable();
+            $table->softDeletes();
            
             $table->timestamps();
         });

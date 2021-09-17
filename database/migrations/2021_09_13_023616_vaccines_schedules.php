@@ -18,6 +18,7 @@ class VaccinesSchedules extends Migration
             $table->id();
             $table->integer("vaccine_id");
             $table->integer('vaccine_schedule_id');
+            $table->softDeletes();
            
             $table->timestamps();
         });
