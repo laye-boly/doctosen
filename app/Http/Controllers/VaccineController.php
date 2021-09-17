@@ -18,9 +18,15 @@ class VaccineController extends Controller
 {
     public function index (Request $request){
 
-        $hospital = Auth::user()->hospitals[0];
-
-        $vaccines = $hospital->vaccines;
+   
+        $hospitals = Auth::user()->hospitals;
+        $vaccines =  [];
+        foreach($hospitals as $hospital){
+            foreach($hospital->vaccines as $vaccine){
+                $vaccines[] = $vaccine;
+            }
+        }
+      
 
         return view('vaccines.index')->with([
             'vaccines' => $vaccines

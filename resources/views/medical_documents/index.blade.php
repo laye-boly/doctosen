@@ -16,16 +16,15 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-       
         <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
 
-            <link href="../../../../../css/bootstrap-icons.css" rel="stylesheet">
+        <link href="../../../../../css/bootstrap-icons.css" rel="stylesheet">
 
-            <link href="../../../../../css/owl.carousel.min.css" rel="stylesheet">
+        <link href="../../../../../css/owl.carousel.min.css" rel="stylesheet">
 
-            <link href="../../../../../css/owl.theme.default.min.css" rel="stylesheet">
+        <link href="../../../../../css/owl.theme.default.min.css" rel="stylesheet">
 
-            <link href="../../../../../css/templatemo-medic-care.css" rel="stylesheet">
+        <link href="../../../../../css/templatemo-medic-care.css" rel="stylesheet">
 
     
 <!--
@@ -41,35 +40,26 @@ https://templatemo.com/tm-566-medic-care
 
         <main>
 
-            @include("menu")
-            
-         
-          
+            @include("inc.menu")
 
-          
-
-         
-
-     
-
-        
-
-         
-
-          
 
             <section class="section-padding" id="booking">
                 <div class="container">
-                    <div class="row">
-                        
-                        <div class="col-lg-8 col-12 mx-auto">
-                            <div class="booking-form">
+                    
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <div class="booking-form">
+                               
+                            
+                            <h5 class="text-center mb-lg-3 mb-2"><a href="{{route('medical.upload')}}">Télécharger un document médical</a></h5>
+                            @if(Auth::user()->type == "doctor")
+                                <h5 class="text-center mb-lg-3 mb-2"><a href="{{route("medical.create")}}">Etablir un document médical</a></h5>
 
-                                <h2 class="text-center mb-lg-3 mb-2">Liste des documents médicaux </h2>
-
+                            @endif
+                            <h5 class="text-center mb-lg-3 mb-2"> Documents médicaux</h5>
+                            @if(count($documents) > 0)
                                 <table class="table table-striped">
                                     <thead>
-                                      <tr>
+                                    <tr>
                                         <th>Nom et prenom du patient</th>
             
                                         <th>Type</th>
@@ -77,13 +67,13 @@ https://templatemo.com/tm-566-medic-care
                                         <th>Editer</th>
                                         <th>Détails</th>
                                         <th>télécharger</th>
-                                      </tr>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($documents as $document)
                                         <tr>
                                             <td>
-                                               
+                                            
             
                                                 {{ $document->patient->first_name }} {{ $document->patient->last_name }}
                                                 
@@ -91,18 +81,28 @@ https://templatemo.com/tm-566-medic-care
                                             
                                             <td>{{ $document->type }}</td>
                                             <td>{{ $document->document_medical_date }}</td>
-                                            <td><a class="btn btn-info" href="/dashboard/user/medical/document/edit/{{$document->id}}">Editer</a></td>
-                                            <td><a class="btn btn-info" href="/dashboard/user/medical/document/show/{{$document->id}}">Voir les détails</a></td>
-                                            <td><a class="btn btn-info" href="{{route('medical.download', ["document" => $document->id])}}">Télécharger</a></td>
-                                            
-                                          </tr>
+                                            <td><a class="btn btn-info" href="{{route('medical.edit', ["medicalDocument" => $document->id ])}}">Editer</a></td>
+                                            <td><a class="btn btn-info" href="{{route('medical.show', ["medicalDocument" => $document->id ])}}">Voir les détails</a></td>
+                                            <td>
+                                                @if ($document->upload == 1)
+                                                    <a class="btn btn-info" href="{{route('medical.download', ["medicalDocument" => $document->id])}}">Télécharger</a>
+                                                @else
+                                                <a href="{{route('medical.downloadMedicalDocument', ['filename' => $document->body])}}">Télécharger</a>
+                                                @endif
+                                            </td>
+                                        </tr>
                                         @endforeach
 
                                 </tbody>
-                            </table>
-                            </div>
+                                </table>
+                            @else
+                                <p>Vous n'avez pour l'instant aucun document médical !</p>
+                            @endif
+                           
+                            
+                            
+            
                         </div>
-
                     </div>
                 </div>
             </section>

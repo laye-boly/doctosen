@@ -49,8 +49,8 @@ function connect() {
   
         case "rejectusername":
           myUsername = msg.name;
-          text = "<b>Your username has been set to <em>" + myUsername +
-            "</em> because the name you chose is in use.</b><br>";
+          text = "<b>Votre nom d'utilsateur a été changé en  <em>" + myUsername +
+            "</em> car il y'a quelqu'un qui a le même participe à la discussion .</b><br>";
           break;
   
         case "userlist":      // Received an updated user list

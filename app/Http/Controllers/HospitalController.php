@@ -29,6 +29,8 @@ class HospitalController extends Controller
 
         return view("hospitals.create");
     }
+
+   
      /**
 
      * Get the URL to a controller action.
@@ -71,6 +73,53 @@ class HospitalController extends Controller
     public function show(Hospital $hospital){
         return view("hospitals.show")->with(['principalHospital' => $hospital]);
     }
+
+    public function edit(Hospital $hospital){
+        return view("hospitals.edit")->with([
+            'hospital' => $hospital
+        ]);
+    }
+
+    public function update(Request $request, Hospital $hospital){
+        // Validation des données saisie
+        $this->validate($request, [
+            'name' => 'required',
+            'adress' => 'required',
+            'phone' => array('required',
+                            'regex:#^7(7|8|0|6)|33\d{7}$#'
+            )
+           
+        ]);
+       
+        $hospital->name = $request->input("name");
+        $hospital->adress = $request->input("adress");
+        $hospital->phone = $request->input("phone");
+
+        $user = User::find(Auth::user()->id);
+        $user->hospitals()->save($hospital);
+       
+        // Redirection avec des mesages flashbag dans la sessions
+        return redirect()->route("hospital.edit", ["hospital" => $hospital])->with(['success-hospital' => 'Les informations ont été renseigné avec succès !']);
+
+
+    }
+
+    public function delete(Request $request, Hospital $hospital){
+        // dd("stop");
+        $this->validate($request, [
+            'hospital-id' => [
+                        Rule::in([$hospital->id]),
+                        'required'
+                    ]
+        ]);
+
+        $hospital->delete();
+
+        return redirect()->route("hospital.index")->with(['success-delete' => "L'hôpital a été bien supprimé !"]);
+
+    }
+
+   
 
    
 }

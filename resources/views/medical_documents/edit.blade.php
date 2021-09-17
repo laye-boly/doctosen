@@ -16,16 +16,15 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-       
         <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
 
-            <link href="../../../../../css/bootstrap-icons.css" rel="stylesheet">
+        <link href="../../../../../css/bootstrap-icons.css" rel="stylesheet">
 
-            <link href="../../../../../css/owl.carousel.min.css" rel="stylesheet">
+        <link href="../../../../../css/owl.carousel.min.css" rel="stylesheet">
 
-            <link href="../../../../../css/owl.theme.default.min.css" rel="stylesheet">
+        <link href="../../../../../css/owl.theme.default.min.css" rel="stylesheet">
 
-            <link href="../../../../../css/templatemo-medic-care.css" rel="stylesheet">
+        <link href="../../../../../css/templatemo-medic-care.css" rel="stylesheet">
 
     
 <!--
@@ -41,31 +40,15 @@ https://templatemo.com/tm-566-medic-care
 
         <main>
 
-            @include("menu")
-            
-         
-          
+            @include("inc.menu")
 
-          
-
-         
-
-     
-
-        
-
-         
-
-          
 
             <section class="section-padding" id="booking">
                 <div class="container">
-                    <div class="row">
-                        {{-- debut --}}
-                        <div class="col-lg-8 col-12 mx-auto">
-                            <div class="booking-form">
-
-                                <h2 class="text-center mb-lg-3 mb-2">Modifier le document médical</h2>
+                    
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <div class="booking-form">
+                            <h2 class="text-center mb-lg-3 mb-2">Modifier le document médical</h2>
 
                                
                                 @if($errors->any())
@@ -85,10 +68,12 @@ https://templatemo.com/tm-566-medic-care
                                 {!! Form::open(['route' => ['medical.update', $medical->id ]])!!}
 
             
+            @if($medical->upload == 0)
             <div class="form-group">
                 {{Form::label('body ', "Le corps du document")}}
                 {{Form::textarea ('body', $medical->body, ['class' => 'form-control'])}}
             </div>
+            @endif
             
             
             <br><br>
@@ -139,9 +124,7 @@ https://templatemo.com/tm-566-medic-care
 
                                 </tbody>
                             </table>
-                            </div>
                         </div>
-
                     </div>
                 </div>
             </section>

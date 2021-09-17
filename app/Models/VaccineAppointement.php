@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VaccineAppointement extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * Un un rv de vaccination ne peut concerner que un et un seul patient

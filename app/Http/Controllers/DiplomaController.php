@@ -20,15 +20,22 @@ class DiplomaController extends Controller
     public function index (Request $request){
 
         $diplomas = Auth::user()->diplomas;
+        
 
         return view('diplomas.index')->with([
             'diplomas' => $diplomas
+            
         ]);
     }
 
     public function create(Request $request){
+        
+        $duplication = false;
+        if($request->has("duplication")){
+            $duplication = $request->input('duplication');
+        }
 
-        return view("diplomas.create");
+        return view("diplomas.create", ['duplication' => $duplication]);
     }
     /**
 
@@ -39,10 +46,7 @@ class DiplomaController extends Controller
     */
     public function store(Request $request){
 
-        // var_dump("41");
-        // var_dump($request->all());
-        // die();
-        // Validation des données saisie
+        
         $this->validate($request, [
             'title' => 'required',
             'year' => array('required',
@@ -50,6 +54,15 @@ class DiplomaController extends Controller
                         ),
             'image' => 'required|mimes:pdf'
         ]);
+
+        $diplomas = Auth::user()->diplomas;
+        foreach($diplomas as $diploma){
+            // dd(123);
+            if(strtoupper($diploma->title) == strtoupper($request->input("title")) ){
+                $dulication = true;
+                return redirect()->route('diploma.create', ["duplication" => $dulication]);
+            }
+        }
 
         if($request->hasFile('image')){
 
@@ -88,7 +101,7 @@ class DiplomaController extends Controller
         $user->diplomas()->save($diploma);
 
         // Redirection avec des mesages flashbag dans la sessions
-        return redirect('/user/profile/complete')->with([
+        return redirect()->route("diploma.create")->with([
             'success-diploma' => 'Votre document a été bien uplodé'
             
             
@@ -104,11 +117,18 @@ class DiplomaController extends Controller
             ]
         );
     }
-    public function edit(Diploma $diploma){
+    public function edit(Request $request, Diploma $diploma){
+
+        $duplication = false;
+
+        if($request->has("duplication")){
+            $duplication = $request->input('duplication');
+        }
 
         return view("diplomas.edit")->with(
             [
-                'diploma' => $diploma
+                'diploma' => $diploma,
+                'duplication' => $duplication
             ]
         );
     }
@@ -130,6 +150,15 @@ class DiplomaController extends Controller
                         ),
             'image' => 'required|mimes:pdf'
         ]);
+
+        $diplomas = Auth::user()->diplomas;
+        foreach($diplomas as $diplomaFromDb){
+            // dd(123);
+            if((strtoupper($diplomaFromDb->title) == strtoupper($request->input("title"))) && $diploma->id != $diplomaFromDb->id ){
+                $dulication = true;
+                return redirect()->route('diploma.edit', ["diploma" => $diploma,"duplication" => $dulication]);
+            }
+        }
 
         if($request->hasFile('image')){
 
@@ -168,7 +197,7 @@ class DiplomaController extends Controller
         $user->diplomas()->save($diploma);
 
         // Redirection avec des mesages flashbag dans la sessions
-        return redirect('/user/profile/complete')->with([
+        return redirect()->route("diploma.edit", ["diploma" => $diploma])->with([
             'success-diploma' => 'Votre document a été bien modifié'
             
             

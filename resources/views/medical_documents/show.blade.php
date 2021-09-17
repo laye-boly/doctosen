@@ -16,7 +16,6 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-       
         <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
 
             <link href="../../../../../css/bootstrap-icons.css" rel="stylesheet">
@@ -41,99 +40,93 @@ https://templatemo.com/tm-566-medic-care
 
         <main>
 
-            @include("menu")
-            
-         
-          
+            @include("inc.menu")
 
-          
-
-         
-
-     
-
-        
-
-         
-
-          
 
             <section class="section-padding" id="booking">
                 <div class="container">
                     
-                        
-                        <div class="col-lg-8 col-12 mx-auto">
-                            <div class="booking-form">
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <div class="booking-form">
                                
-                                <h5 class="text-center mb-lg-3 mb-2"> Type du dossier médical : {{$document->type}}</h5>
+                            <h5 class="text-center mb-lg-3 mb-2"> Type du dossier médical : {{$document->type}}</h5>
+                            @if ($principalHospital != null)
                                 <div class="text-center mb-lg-3 mb-2">
                                     <h6>Information sur la structure de santé du médecin</h6>
                                     <p>Nom : {{$principalHospital->name}}</p>
                                     <p>Adresse : {{$principalHospital->adress}}</p>
                                     <p>Téléphone  : {{$principalHospital->phone}}</p>
                                 </div>
+                            @else
+                                <div>Ce document a été uploadé par le patient</div>
+                            @endif
 
-                                <div>
-                                    <div class="text-start mb-lg-3 mb-2">
-                                        <h6>Information sur le patient</h6>
-                                        <p>Prénom : {{$document->patient->first_name}}</p>
-                                        <p>Nom : {{$document->patient->last_name}}</p>
-                                        <p>Téléphone : {{$document->patient->phone}}</p>
-                                        <p>Adresse : {{$document->patient->adress}}</p>
-                                    </div>
-                                    <div class="text-center mb-lg-3 mb-2">
-                                        <h6>Corps du document</h6>
-                                        @if ($document->upload == 0)
-                                            <p>{{$document->body}}</p>
-
-                                        @else
-                                            <p>
-                                                Ce document à été uploadé dans la plateforme
-                                                Vous pouvez le télécharger en cliquant <a href="{{route('medical.downloadMedicalDocument', ['filename' => $document->body])}}">ici</a>
-                                            </p>
-                                            
-
-                                        @endif
-                                    </div>
-
-                                    <div class="text-start mb-lg-3 mb-2">
-                                        <h6>Information sur le médecin</h6>
-                                        <p>Prénom : {{$author->first_name}}</p>
-                                        <p>Nom : {{$author->last_name}}</p>
-                                        <p>Téléphone : {{$author->phone}}</p>
-                                        <p>Adresse : {{$author->adress}}</p>
-                                    </div>
+                            <div>
+                                <div class="text-start mb-lg-3 mb-2">
+                                    <h6>Information sur le patient</h6>
+                                    <p>Prénom : {{$document->patient->first_name}}</p>
+                                    <p>Nom : {{$document->patient->last_name}}</p>
+                                    <p>Téléphone : {{$document->patient->phone}}</p>
+                                    <p>Adresse : {{$document->patient->adress}}</p>
                                 </div>
-                                </div>
-                              
-                                    <h6 class="text-center mb-lg-3 mb-2">Médecins ayant accés au documents</h6>
-                                    <table class="table table-striped">
-                                        <thead>
-                                          <tr>
-                                            <th>prenom et nom du médecin</th>
-                                            <th>spécialite</th>
-                                            <th>téléphone</th>
-                                            <th>adresse</th>
-                                          
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach ($doctors as $doctor)
-                                        <tr>
-                                            <td>{{$doctor->first_name }} {{$doctor->last_name}}</td>
-                                                    <td>{{$doctor->title}}</td>
-                                                    <td>{{$doctor->phone }}</td>
-                                                    <td>{{$doctor->adress }}</td>
-                                                  
-                                          </tr>
-                                        @endforeach
-    
-                                    </tbody>
-                                </table>
-                               
-                       
+                                <div class="text-center mb-lg-3 mb-2">
+                                    <h6>Corps du document</h6>
+                                    @if ($document->upload == 0)
+                                        <p>{{$document->body}}</p>
 
-                    
+                                    @else
+                                        <p>
+                                            Ce document à été uploadé dans la plateforme
+                                            Vous pouvez le télécharger en cliquant <a href="{{route('medical.downloadMedicalDocument', ['filename' => $document->body])}}">ici</a>
+                                        </p>
+                                        
+
+                                    @endif
+                                </div>
+
+                                @if ($document->upload == 0)
+                                <div class="text-start mb-lg-3 mb-2">
+                                    <h6>Information sur le médecin</h6>
+                                    <p>Prénom : {{$author->first_name}}</p>
+                                    <p>Nom : {{$author->last_name}}</p>
+                                    <p>Téléphone : {{$author->phone}}</p>
+                                    <p>Adresse : {{$author->adress}}</p>
+                                </div>
+                                    
+                                @endif
+                            </div>
+                            </div>
+                          
+                                <h6 class="text-center mb-lg-3 mb-2">Médecins ayant accés au documents</h6>
+                                <table class="table table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th>prenom et nom du médecin</th>
+                                        <th>spécialite</th>
+                                        <th>téléphone</th>
+                                        <th>adresse</th>
+                                      
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($doctors as $doctor)
+                                    <tr>
+                                        <td>{{$doctor->first_name }} {{$doctor->last_name}}</td>
+                                                <td>{{$doctor->title}}</td>
+                                                <td>{{$doctor->phone }}</td>
+                                                <td>{{$doctor->adress }}</td>
+                                              
+                                      </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                            
+                            
+                            
+            
+                        </div>
+                    </div>
                 </div>
             </section>
 

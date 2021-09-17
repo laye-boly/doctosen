@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\App;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class VaccineAppointementController extends Controller
@@ -58,7 +59,7 @@ class VaccineAppointementController extends Controller
             $appointements = VaccineAppointement::where("patient_id", Auth::user()->id)->orderBy('id', 'DESC')->get();
         }
         
-        // dd("444");
+        
 
         return view("vaccine_appointements.index")->with("appointements", $appointements);
     }
@@ -109,11 +110,13 @@ class VaccineAppointementController extends Controller
         $appointement->status = "en attente de confirmation";
         $appointementHour = $request->input("appointement_hour");
         $appointement->appointement_hour = $appointementHour;
-      
+        
         
         $schedule = VaccineSchedule::findOrFail($request->input("schedule_id"));
+      
+        
         $patient = User::findOrFail($request->input("patient_id"));
-        // dd($request->input("patient_id"));
+        
 
         $appointement->appointement_date = $schedule->schedule_date;
         // On récupère les heures de début et de fin de l'emploi du de la vaccination
@@ -146,6 +149,38 @@ class VaccineAppointementController extends Controller
 
     }
 
+    public function show(Request $request, VaccineAppointement $vaccineAppointement){
+        $patient = $vaccineAppointement->patient;
+        $vaccineAppointement = DB::table("vaccine_appointements")
+             ->join("vaccine_schedules", 'vaccine_appointements.vaccine_schedule_id', '=', 'vaccine_schedules.id')
+             ->join("vaccines_schedules_vaccines", "vaccines_schedules_vaccines.vaccine_schedule_id", "=", "vaccine_schedules.id")
+             ->join("vaccines", "vaccines_schedules_vaccines.vaccine_id", "=", "vaccines.id")
+             ->join("hospitals", "hospitals.id", "=", "vaccines.hospital_id")
+             ->where("vaccine_appointements.patient_id", "=", $patient->id)
+             ->select(
+                 "vaccine_appointements.id as appointementId",
+                 "vaccine_appointements.appointement_date as appointement_date",
+                 "vaccine_appointements.appointement_hour as appointement_hour",
+                 "vaccine_appointements.status as status",
+                 "vaccine_appointements.vaccine_schedule_id as scheduleId",
+                 "vaccines.type as vaccineType",
+                 "vaccines.name as vaccineName",
+                 "vaccines.total as vaccineTotal",
+                 "hospitals.name as hospitalName",
+                 "hospitals.adress as hospitalAdress",
+                 "hospitals.phone as hospitalPhone"
+                 )
+             ->get();
+             
+     //    dd($vaccineAppointement);
+ 
+             
+         return view("vaccine_appointements.show")->with([
+             "appointement" => $vaccineAppointement,
+             "patient" => $patient
+         ]);
+     }
+
     public function update(Request $request, $id){
         $this->validate($request, [
             'status' => array("required",
@@ -157,19 +192,41 @@ class VaccineAppointementController extends Controller
         $appointement->save();
 
         
-        return redirect()->route('schedule.appointement.show', [$appointement]);
+        return redirect()->route('vaccine.appointement.show', ["vaccineAppointement" => $appointement]);
 
     }
 
-    public function show(Request $request, VaccineAppointement $vaccineAppointement){
-       
-        return view("vaccine_appointements.show")->with("appointement", $vaccineAppointement);
-    }
+    
 
     public function download(Request $request, VaccineAppointement $vaccineAppointement){
+        $patient = $vaccineAppointement->patient;
+        // dd($patient);
+        $appointement = DB::table("vaccine_appointements")
+             ->join("vaccine_schedules", 'vaccine_appointements.vaccine_schedule_id', '=', 'vaccine_schedules.id')
+             ->join("vaccines_schedules_vaccines", "vaccines_schedules_vaccines.vaccine_schedule_id", "=", "vaccine_schedules.id")
+             ->join("vaccines", "vaccines_schedules_vaccines.vaccine_id", "=", "vaccines.id")
+             ->join("hospitals", "hospitals.id", "=", "vaccines.hospital_id")
+             ->where("vaccine_appointements.patient_id", "=", $patient->id)
+             ->select(
+                 "vaccine_appointements.id as appointementId",
+                 "vaccine_appointements.appointement_date as appointement_date",
+                 "vaccine_appointements.appointement_hour as appointement_hour",
+                 "vaccine_appointements.status as status",
+                 "vaccine_appointements.vaccine_schedule_id as scheduleId",
+                 "vaccine_appointements.patient_id as PatientId",
+                 "vaccines.type as vaccineType",
+                 "vaccines.name as vaccineName",
+                 "vaccines.total as vaccineTotal",
+                 "hospitals.name as hospitalName",
+                 "hospitals.adress as hospitalAdress",
+                 "hospitals.phone as hospitalPhone"
+                 )
+             ->get();
+
+             
   
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('vaccine_appointements.download', compact('vaccineAppointement'));
+        $pdf->loadView('vaccine_appointements.download', compact('patient', 'appointement'));
         return $pdf->download('rendez_vous_vaccination.pdf');
     }
 }

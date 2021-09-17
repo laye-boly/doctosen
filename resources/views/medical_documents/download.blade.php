@@ -51,12 +51,15 @@ https://templatemo.com/tm-566-medic-care
                             <div class="booking-form">
                                
                                 <h5 class="text-center mb-lg-3 mb-2"> Type du dossier médical : {{$document->type}}</h5>
+                                @if ($principalHospital != null)
                                 <div class="text-center mb-lg-3 mb-2">
                                     <h6>Information sur la structure de santé du médecin</h6>
                                     <p>Nom : {{$principalHospital->name}}</p>
                                     <p>Adresse : {{$principalHospital->adress}}</p>
                                     <p>Téléphone  : {{$principalHospital->phone}}</p>
                                 </div>
+                                    
+                                @endif
 
                                 <div>
                                     <div class="text-start mb-lg-3 mb-2">

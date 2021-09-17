@@ -41,7 +41,7 @@ https://templatemo.com/tm-566-medic-care
 
         <main>
 
-            @include("menu")
+            @include("inc.menu")
             
          
 
@@ -63,11 +63,11 @@ https://templatemo.com/tm-566-medic-care
                             @if (session('success'))
                                 <div class="alert alert-success">
                                    <p>{{ session('success') }}</p> 
-                                    <p class="text-end"><a href="{{route('medical.show', ['document' => session('id')])}}">voir le document</a></p>
+                                    <p class="text-end"><a href="{{route('medical.show', ['medicalDocument' => session('id')])}}">voir le document</a></p>
                                 </div>
                             @endif
                             
-                            {!! Form::open(['url' => '/dashboard/user/medical/document/upload', 'files' => true]) !!}
+                            {!! Form::open(['url' => route("medical.upload"), 'files' => true]) !!}
 
                                 <div class="form-group">
                                     {{Form::label('type', "Le type de document ")}}
@@ -85,16 +85,16 @@ https://templatemo.com/tm-566-medic-care
                     
                                 </div>
                                 {{-- Nous permettra d'appliquer correctement les reglement de validations --}}
-                                <input type="hidden" value="patient" name="hidden_input">
+                                <input type="hidden" value="doctor" name="hidden_input">
                                 @else
                                 <div class="form-group">
-                                    {{Form::label('destinataire', "Donnez accès à d'autres médecins ")}}
+                                    {{Form::label('destinataire', "Donnez l'accès du document à vos médecins ")}}
                                     {{Form::select('destinataire[]', $destinataires, null, array('multiple' => true, 'class' => 'form-select')) }}
                     
                                 </div> 
 
                                 {{-- Nous permettra d'appliquer correctement les reglement de validations --}}
-                                <input type="hidden" value="doctor" name="hidden_input">
+                                <input type="hidden" value="patient" name="hidden_input">
                                 @endif
 
            

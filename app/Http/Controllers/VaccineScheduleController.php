@@ -30,13 +30,13 @@ class VaccineScheduleController extends Controller
 
     public function create(Request $request){
         
-    
-        $hospitalVacinneIds = $this->getHospitalVaccineId();
-        // On prend tous les vaccins de la structure sanitaires
-        $vaccines = Vaccine::all()->whereIn("id", $hospitalVacinneIds)->all();
-        // On cree la forme sous laquelle seront affiché les vaccins aux niveaudu formulaire
-        // Pour chaque item du select, la valeur de l'option sera l'id du vaccin et on va
-        // afficher à l'utilisateur le type du vaccin son nom et son total
+        $hospitals = Auth::user()->hospitals;
+        $vaccines =  [];
+        foreach($hospitals as $hospital){
+            foreach($hospital->vaccines as $vaccine){
+                $vaccines[] = $vaccine;
+            }
+        }
         
         $vaccineArray = [];
         foreach($vaccines as $vaccine){
@@ -157,12 +157,15 @@ class VaccineScheduleController extends Controller
     public function edit(Request $request, VaccineSchedule $vaccineSchedule){
 
         
-        $hospitalVacinneIds = $this->getHospitalVaccineId();
-        // On prend tous les vaccins de la structure sanitaires
-        $vaccines = Vaccine::all()->whereIn("id", $hospitalVacinneIds)->all();
-        // On cree la forme sous laquelle seront affiché les vaccins aux niveaudu formulaire
-        // Pour chaque item du select, la valeur de l'option sera l'id du vaccin et on va
-        // afficher à l'utilisateur le type du vaccin son nom et son total
+        $hospitals = Auth::user()->hospitals;
+        $vaccines =  [];
+        foreach($hospitals as $hospital){
+            foreach($hospital->vaccines as $vaccine){
+                $vaccines[] = $vaccine;
+            }
+        }
+
+        
         
         $vaccineArray = [];
         foreach($vaccines as $vaccine){
@@ -268,13 +271,14 @@ class VaccineScheduleController extends Controller
     public function delete(Request $request, VaccineSchedule $vaccineSchedule){
        
         $this->validate($request, [
-            'vaccine-id' => [
+            'schedule-id' => [
                         Rule::in([$vaccineSchedule->id]),
                         'required'
                     ]
         ]);
 
         $vaccineSchedule->delete();
+
 
 
         return redirect()->route('vaccine.schedule.index')->with([
@@ -292,20 +296,18 @@ class VaccineScheduleController extends Controller
 
     private function getHospitalVaccineId(){
 
-        $vaccines = Vaccine::all();
-
-        // On ne prendra que les vaccins de notre structure sanitaire
-        $hospitalVaccines = $vaccines->reject(function ($vaccine) {
-            // on rejecte tous les vaccins dont le hospital_id est diffrent de l'id de la  structure sanitaire 
-            return $vaccine->hospital_id != Auth::user()->hospitals[0]->id;
-        });
-    
-        $hospitalVaccinesId = [];
-        foreach($hospitalVaccines as $hospitalVaccine){
-            $hospitalVaccinesId[] = $hospitalVaccine->id;
+        $hospitals = Auth::user()->hospitals;
+        $vaccines =  [];
+        foreach($hospitals as $hospital){
+            foreach($hospital->vaccines as $vaccine){
+                $vaccines[] = $vaccine;
+            }
         }
+        $hospitalVaccinesId = [];
 
-        $hospitalVaccinesId = collect($hospitalVaccinesId)->unique()->toArray();
+        foreach($vaccines as $vaccine){
+            $hospitalVaccinesId[] = $vaccine->id;
+        }
 
         return $hospitalVaccinesId;
     }
@@ -338,33 +340,24 @@ class VaccineScheduleController extends Controller
 
     private function getUserHospitalVaccinesSchedules(){
 
-        $schedules = null;
-        $user = User::find(Auth::user()->id);
-        //On prend la structure sanitaire qui présente des vaccins
-        $hospital = $user->hospitals[0];
-        // On récupère tous les vaccins de la structure sanitaire
-        $vaccines = $hospital->vaccines;
+        $vaccinesSchedules = DB::table("vaccine_schedules")
+             ->join("vaccines_schedules_vaccines", "vaccines_schedules_vaccines.vaccine_schedule_id", "=", "vaccine_schedules.id")
+             ->join("vaccines", "vaccines_schedules_vaccines.vaccine_id", "=", "vaccines.id")
+             ->join("hospitals", "hospitals.id", "=", "vaccines.hospital_id")
+             ->where("hospitals.user_id", "=", Auth::user()->id)
+             ->where("vaccine_schedules.deleted_at", "=", NULL)
+             ->select(
+                 "vaccine_schedules.id as id",
+                 "vaccine_schedules.schedule_date as schedule_date",
+                 "vaccine_schedules.start_time as start_time",
+                 "vaccine_schedules.end_time as end_time",
+              
+                 )
+                ->orderBy("vaccine_schedules.schedule_date", "desc")
+             ->get();
 
-        //Pour chaque vaccins, on prends son emploi de temps
 
-        foreach($vaccines as $vaccine){
-
-            $scheduleIdRelatedToVaccine = [];
-
-            foreach ($vaccine->schedules as $shedule) {
-                
-                $scheduleIdRelatedToVaccine[] =  $shedule->pivot->vaccine_schedule_id;
-            }
-
-          
-            $scheduleIdRelatedToVaccine = collect($scheduleIdRelatedToVaccine)->unique()->toArray();
-
-            $schedules[] = VaccineSchedule::all()->whereIn("id", $scheduleIdRelatedToVaccine)->all();
-   
-        
-        }
-
-        return $schedules;
+             return $vaccinesSchedules;
     }
 
 

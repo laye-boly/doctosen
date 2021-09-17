@@ -97,6 +97,7 @@ class ScheduleController extends Controller
         $user = User::find(Auth::user()->id);
         // On lie le le docteur à son emploi de temps et on enregistre le tout
         $user->schedules()->save($schedule);
+        return redirect()->route("schedule.index");
     }
 
     public function edit(Request $request, $id){
@@ -142,7 +143,7 @@ class ScheduleController extends Controller
             $errorTime = "L'heure de début de disponiblité doit être inférieure à celle de fin de disponibilité";
             $schedule = Schedule::findOrFail($id);
             // return view("schedules.edit")->with(["errorTime" => $errorTime, "errorDate" => "no", "schedule" => $schedule]);
-            return redirect()->route('schedule.edit', ["errorTime" => $errorTime, "errorDate" => "no", "schedule" => $schedule]);
+            return redirect()->route('schedule.edit', ["id" => $id, "errorTime" => $errorTime, "errorDate" => "no"]);
 
         }
 
@@ -156,7 +157,7 @@ class ScheduleController extends Controller
         if($scheduleDateTotimestamp < $actualDateTotimestamp){
             $errorDate = "Vous ne pouvez pas être disponiblité à une date passée";
             // return view("schedules.edit")->with(["errorDate" => $errorDate, "errorTime" => "no", "schedule" => Schedule::findOrFail($id)]);
-            return redirect()->route('schedule.edit', ["errorTime" => "no", "errorDate" => $errorDate, "schedule" => Schedule::findOrFail($id)]);
+            return redirect()->route('schedule.edit', ["id" => $id, "errorTime" => "no", "errorDate" => $errorDate]);
 
         }
 

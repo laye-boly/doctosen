@@ -27,7 +27,6 @@ class AppointementController extends Controller
         }else{
             $appointements = Appointement::where("patient_id", Auth::user()->id)->orderBy('id', 'DESC')->get();
         }
-        
 
         return view("appointements.index")->with("appointements", $appointements);
     }
@@ -37,11 +36,12 @@ class AppointementController extends Controller
         // Pour les besoins des champs cachés dans le formulaire qui sera crée
         $schedule = $request->input("schedule");
         $doctor = $request->input("doctor");
-        $errorTime = $request->input("errorTime");
+        
+        $errorTime = "no";
+        if($request->has("errorTime")){
+            $errorTime = $request->input("errorTime");
+        }
 
-        // dd($errorTime);
-        // On défint les erreur relatis au choix de l'heure à "no"
-        // $errorTime = "no";
         return view("appointements.create")->with(["schedule" => $schedule, "doctor" => $doctor, "errorTime" => $errorTime]);
     }
 
@@ -53,6 +53,8 @@ class AppointementController extends Controller
      * @param  Request  $request
     */
     public function store(Request $request){
+
+        // dd("ok 0");
         // Validation des données saisie
         $this->validate($request, [
             'appointement_hour' => array(
@@ -61,12 +63,16 @@ class AppointementController extends Controller
                                 )
 
         ]);
+        // dd("ok 1");
 
         $appointement = new Appointement();
         $appointement->status = "en attente de confirmation";
         $appointementHour = $request->input("appointement_hour");
         $appointement->appointement_hour = $appointementHour;
+       
         $schedule = Schedule::findOrFail($request->input("schedule"));
+        // dd("ok 2");
+
         $doctor = User::findOrFail($request->input("doctor"));
         $appointement->appointement_date = $schedule->schedule_date;
         $starTime =  $schedule->start_time;
@@ -78,7 +84,7 @@ class AppointementController extends Controller
         // On convertis l'heure choisis par le patient en timestamp unix
         $appointementHourTotimestamp = strtotime($appointementHour);
 
-
+        // dd("ok 1");
 
         // On s'assure que l'heure du patient est compris dans l'intervalle de disponibilité du doctor
         if($appointementHourTotimestamp >= $starTimeTotimestamp && $appointementHourTotimestamp <= $endTimeTotimestamp){
@@ -88,13 +94,13 @@ class AppointementController extends Controller
                 $appointement->appointement_reason = $request->input("appointement_reason");
 
             }
-            // $patient = User::find(Auth::user()->id);
-            $patient = User::find(2);
+            $patient = User::find(Auth::user()->id);
             $patient->patientAppointement()->save($appointement);
             $doctor->doctorAppointement()->save($appointement);
             return redirect()->route('appointement.index');
 
         }else{
+            // dd("ici je suis 3");
                 $errorTime = "Veuillez choisir une heure comprise entre $starTime et $endTime";
             // return view("appointements.create")->with(["schedule" => $schedule->id, "doctor" => $doctor->id, "errorTime" => $errorTime]);
             return redirect()->route('appointement.create', ["schedule" => $schedule->id, "doctor" => $doctor->id, "errorTime" => $errorTime]);

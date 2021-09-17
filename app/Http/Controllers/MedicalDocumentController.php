@@ -2,7 +2,8 @@
     namespace App\Http\Controllers;
 
     use App\Models\Appointement;
-    use Illuminate\Http\Request;
+use App\Models\Hospital;
+use Illuminate\Http\Request;
 
     use App\Models\MedicalDocument;
 
@@ -128,17 +129,23 @@
 
             $medical = MedicalDocument::findOrFail($id);
 
-            $this->validate($request, [
-                'body' => array(
-                    "required"
-                )
-            
-                // "type" => "regex:#^certificat médical|ordonnance|recommandation|autre$#",
-            
-            ]);
+            if($medical->upload == 0){
+                $this->validate($request, [
+                    'body' => array(
+                        "required"
+                    )
+                
+                    // "type" => "regex:#^certificat médical|ordonnance|recommandation|autre$#",
+                
+                ]);
+
+            }
             // "regex:#^confirmé|en attente de confirmation|fait|annulé$#"
         
-            $medical->body = $request->input("body");
+            if($medical->upload == 0){
+                $medical->body = $request->input("body");
+            }
+            
             $medical->type = $request->input("type");
 
             // On récupère les id des médecins auquels on a donné accés au document médical du patient
@@ -177,45 +184,57 @@
         }
 
 
-        public function show(MedicalDocument $document){
+        public function show(MedicalDocument $medicalDocument){
 
             //On récupère le médecin qui a établit l'ordonnance
-            $author = User::find($document->author_id);
-            // On récupère la structure sanitaire principal du médecin auteur de l'ordonnance
-            $principalHospital = $author->hospitals[0];
+            $author = User::find($medicalDocument->author_id);
+
+            $principalHospital = null;
+            $hospitals = null;
+            if(Auth::user()->type == "doctor"){
+
+                // On récupère la structure sanitaire principal du médecin auteur de l'ordonnance
+                $principalHospital = $author->hospitals[0];
+            }
+            
 
             // On prend tous les medecins qui ont accés au document médical
-            $doctors = $this->findDoctorForDocument($document);
+            $doctors = $this->findDoctorForDocument($medicalDocument);
 
         //   dd($doctors);
             return view("medical_documents.show")->with([
-                "document" => $document, 
+                "document" => $medicalDocument, 
                 "author" => $author,
                 "principalHospital" => $principalHospital,
                 "doctors" => $doctors
             ]);
         }
 
-        public function download(Request $request, MedicalDocument $document){
+        public function download(Request $request, MedicalDocument $medicalDocument){
 
-     
+            // dd("stop");
             
             //On récupère le médecin qui a établit l'ordonnance
-            $author = User::find($document->author_id);
-            // On récupère la structure sanitaire principal du médecin auteur de l'ordonnance
-            $principalHospital = $author->hospitals[0];
-    
+            $author = User::find($medicalDocument->author_id);
+            // dd("stop 1");
+            $principalHospital = null;
+            $hospitals = null;
+            if(Auth::user()->type == "doctor"){
+                // On récupère la structure sanitaire principal du médecin auteur de l'ordonnance
+                $principalHospital = $author->hospitals[0];
+            }
+            
             // On prend tous les medecins qui ont accés au document médical
-            $doctors = $this->findDoctorForDocument($document);
+            $doctors = $this->findDoctorForDocument($medicalDocument);
 
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadView('medical_documents.download', [
-                "document" => $document, 
+                "document" => $medicalDocument, 
                 "author" => $author,
                 "principalHospital" => $principalHospital,
                 "doctors" => $doctors
             ]);
-            return $pdf->download($document->type.'.pdf');
+            return $pdf->download($medicalDocument->type.'.pdf');
         }
 
 
@@ -274,19 +293,25 @@
                     // Validation des données saisie
                     $this->validate($request, [
                         'type' => 'required',
-                        'file' => 'required|mimes:pdf',
-                        "destinataire" => Rule::in($doctorPatientsId)
+                        'file' => 'required|mimes:pdf'
+                        // "destinataire" => Rule::in($doctorPatientsId)
                     ]);
 
                 }else if($request->input("hidden_input") == "patient"){
 
                     $patientDoctorId = $this->getPatienDoctortId();
-
+                    $patientDoctorIdtoString = [];
+                    foreach($patientDoctorId as $doctorId){
+                        $patientDoctorIdtoString[] = "$doctorId";
+                    }
+                    
+                    // dd($patientDoctorIdtoString);
+                    // dd($request->input("destinataire"));
                     // Validation des données saisie
                     $this->validate($request, [
                         'type' => 'required',
-                        'file' => 'required|mimes:pdf',
-                        "destinataire" => Rule::in($patientDoctorId)
+                        'file' => 'required|mimes:pdf'
+                        // "destinataire" => Rule::in($patientDoctorIdtoString)
                     ]);
 
                 }else{
@@ -366,7 +391,7 @@
     
                 // On enregistre le document médical
                 $document->save();
-                return redirect('/dashboard/user/medical/document/upload')->with([
+                return redirect()->route("medical.upload")->with([
                     'success' => 'Votre document a été bien uplodé',
                     'id'      => $document->id
                 ]);
@@ -412,19 +437,23 @@
             return $doctorPatientsId;
         }
 
+        // Retourne tous les id des médecin pour le client connecté
+
         private function getPatienDoctortId(){
 
             $appointements = Appointement::all();
 
             // On ne prendra que les médecin  de notre patients
             $patientAppointements = $appointements->reject(function ($appointement) {
-                // on rejecte tous les rv dont le doctor_id est diffrent de l'id du medecin connecté 
-                return $appointement->doctor_id != Auth::user()->id;
+                // on rejecte tous les rv dont le pateint_id est diffrent de l'id du medecin connecté 
+                return $appointement->patient_id != Auth::user()->id;
             });
+
+            
         
             $patientDoctorsId = [];
             foreach($patientAppointements as $patientAppointement){
-                $patientDoctorsId[] = $patientAppointement->patient_id;
+                $patientDoctorsId[] = $patientAppointement->doctor_id;
             }
 
             $patientDoctorsId = collect($patientDoctorsId)->unique()->toArray();
