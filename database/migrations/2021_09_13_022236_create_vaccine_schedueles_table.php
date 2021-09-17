@@ -13,7 +13,7 @@ class CreateVaccineScheduelesTable extends Migration
      */
     public function up()
     {
-        Schema::create('vaccine_schedueles', function (Blueprint $table) {
+        Schema::create('vaccine_schedules', function (Blueprint $table) {
             $table->id();
             $table->date("schedule_date");
             $table->char('start_time', 5);
