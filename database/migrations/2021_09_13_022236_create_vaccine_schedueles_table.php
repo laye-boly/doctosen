@@ -13,6 +13,7 @@ class CreateVaccineScheduelesTable extends Migration
      */
     public function up()
     {
+
         Schema::create('vaccine_schedules', function (Blueprint $table) {
             $table->id();
             $table->date("schedule_date");
@@ -21,6 +22,7 @@ class CreateVaccineScheduelesTable extends Migration
             $table->integer('status'); // 0 ou 1 pour indiquer si l'emploi de temps est activé ou non
             $table->softDeletes();
             $table->timestamps();
+            
         });
     }
 
