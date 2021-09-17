@@ -73,7 +73,7 @@ class SearchRvService {
             //     "vaccines.hospital_id as vaccineHospitalId");
             // dd($query->get());
             $query->join("vaccines_schedules_vaccines", 'vaccines.id', '=', 'vaccines_schedules_vaccines.vaccine_id');  
-            // $query->join("vaccine_schedules", 'vaccines_schedules_vaccines.vaccine_schedule_id', '=', 'vaccine_schedules.id'); 
+            // $query->join("vaccine_schedules", 'vaccines_schedules_vaccines.vaccine_schedule_id', '=', 'vaccine_schedules.id');
             // dd($query->get());
 
             if($this->date != null){
@@ -172,15 +172,15 @@ class SearchRvService {
                     case "doctor_name":
                         $query->orderBy('users.first_name', $this->orderBy);
                         $query->orderBy('users.last_name', $this->orderBy);
-                        dd("case doctor_name");
+                        // dd("case doctor_name");
                         break;
                     case "doctor_title":
                         $query->orderBy('users.title', $this->orderBy);
-                        dd("case doctor_title");
+                        // dd("case doctor_title");
                         break;
                     case "doctor_adress":
                         $query->orderBy('users.adress', $this->orderBy);
-                        dd("case doctor_adress");
+                        // dd("case doctor_adress");
                         break;
                     
                     default:
@@ -224,10 +224,10 @@ class SearchRvService {
     }
 
     public function getData(){
-        // if($this->table = "hospitals"){
-        // dd($this->search()->get());
+        if($this->table = "hospitals"){
+            dd($this->search()->get());
 
-        // }
+        }
         return $this->search()->paginate(5);
     }
     
