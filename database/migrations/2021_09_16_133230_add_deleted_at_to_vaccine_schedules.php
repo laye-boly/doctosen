@@ -13,9 +13,9 @@ class AddDeletedAtToVaccineSchedules extends Migration
      */
     public function up()
     {
-        // Schema::table('vaccine_schedules', function (Blueprint $table) {
-        //     $table->softDeletes();
-        // });
+        Schema::table('vaccine_schedules', function (Blueprint $table) {
+            $table->softDeletes();
+        });
     }
 
     /**

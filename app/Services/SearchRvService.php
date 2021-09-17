@@ -73,7 +73,7 @@ class SearchRvService {
             //     "vaccines.hospital_id as vaccineHospitalId");
             // dd($query->get());
             $query->join("vaccines_schedules_vaccines", 'vaccines.id', '=', 'vaccines_schedules_vaccines.vaccine_id');  
-            $query->join("vaccine_schedules", 'vaccines_schedules_vaccines.vaccine_schedule_id', '=', 'vaccine_schedules.id'); 
+            // $query->join("vaccine_schedules", 'vaccines_schedules_vaccines.vaccine_schedule_id', '=', 'vaccine_schedules.id'); 
             // dd($query->get());
 
             if($this->date != null){
