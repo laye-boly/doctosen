@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNullableToVaccineAppointements extends Migration
+class DropeVaccineScheduleIdAndPatientIdVaccineAppointements extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddNullableToVaccineAppointements extends Migration
     public function up()
     {
         Schema::table('vaccine_appointements', function (Blueprint $table) {
-            $table->integer("vaccine_schedule_id")->nullable();
-            $table->integer("patient_id")->nullable();
+            $table->dropColumn(['vaccine_schedule_id', 'patient_id']);
         });
     }
 
