@@ -186,12 +186,13 @@ use Illuminate\Http\Request;
 
         public function show(MedicalDocument $medicalDocument){
 
+            //   dd($medicalDocument);
             //On récupère le médecin qui a établit l'ordonnance
             $author = User::find($medicalDocument->author_id);
-
+            
             $principalHospital = null;
             $hospitals = null;
-            if(Auth::user()->type == "doctor"){
+            if($author->type == "doctor"){
 
                 // On récupère la structure sanitaire principal du médecin auteur de l'ordonnance
                 $principalHospital = $author->hospitals[0];
@@ -201,7 +202,7 @@ use Illuminate\Http\Request;
             // On prend tous les medecins qui ont accés au document médical
             $doctors = $this->findDoctorForDocument($medicalDocument);
 
-        //   dd($doctors);
+        
             return view("medical_documents.show")->with([
                 "document" => $medicalDocument, 
                 "author" => $author,
