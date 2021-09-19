@@ -18,7 +18,7 @@ return [
     */
 
     // 'default' => env('DB_CONNECTION', 'mysql'), default
-    'default' => isset($DATABASE_URL["host"]) ?  'pgsql' : env('DB_CONNECTION', 'mysql'),
+    'default' => isset($DATABASE_URL["host"]) ?  env('DB_CONNECTION', 'pgsql') : env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
