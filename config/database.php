@@ -80,6 +80,7 @@ return [
             // 'password' => env('DB_PASSWORD', ''), default
             'password' => isset($DATABASE_URL["pass"]) ? $DATABASE_URL["pass"] : env('DB_PASSWORD', ''), // heroku
             'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
             'prefix' => '',
             'prefix_indexes' => true,
             'schema' => 'public',
