@@ -17,8 +17,8 @@ class CreateVaccineAppointementsTable extends Migration
             $table->id();
             $table->date("appointement_date");
             $table->time("appointement_hour");
-            $table->integer("vaccine_schedule_id");
-            $table->integer("patient_id");
+            $table->integer("vaccine_schedule_id")->nullable();
+            $table->integer("patient_id")->nullable();
             $table->timestamps();
             
         });
